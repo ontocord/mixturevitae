@@ -1,15 +1,6 @@
 # MixtureVitee
 MixtureVitae: A Permissive, High-Performance, Open-Access Pretraining Dataset
 
-# Contents
-This repo contains the code that was used for the following procedures to create MixtureVitae and the artifacts in the paper:
-1. Decontamination
-2. Evaluation
-3. Tokenization
-# MixtureVitae
-
-**MixtureVitae: A Permissive, High-Performance, Open-Access Pretraining Dataset**
-
 ## Overview
 
 This repository contains the code and instructions for training and evaluating models using the MixtureVitae dataset. Our training framework utilizes a fork of NVIDIA's Megatron-LM for large-scale model training.
@@ -43,3 +34,9 @@ Training procedures and scripts are available in the `train` folder, including:
 Evaluation scripts are provided in the `eval` folder:
 - We use the `lm-evaluation-harness` framework for all benchmarks
 - Automated scripts for efficient SLURM job submission on HPC systems
+
+## Decontamination
+The decontamination scripts are provided in the `decontamination` folder.
+
+## Math Word Problems
+The script for generating math word problems is in the `math_word_problems` folder.
