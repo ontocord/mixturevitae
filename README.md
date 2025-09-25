@@ -39,4 +39,7 @@ Evaluation scripts are provided in the `eval` folder:
 The decontamination scripts are provided in the `decontamination` folder.
 
 ## Math Word Problems
-The script for generating math word problems is in the `math_word_problems` folder.
+The script for generating math word problems is in the `math_word_problems` folder. Specifically, `math_word_problems/generate_math.py` creates synthetic math word problems.
+
+## Data Curation
+The script containing the data curation pipeline that processes raw text data from multiple sources (Common-Pile, curated datasets, FineFine, Nemo, MAGA, txt360) is in `process_data` folder.
