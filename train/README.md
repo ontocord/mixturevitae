@@ -1,4 +1,4 @@
-# MixtureVitae Training Setup
+# Training Setup
 
 ## Environment Setup
 
@@ -89,6 +89,8 @@ source megatron_exp_data-PARAM_machine-LEONARDO_modelscale-0.13b_dist_ckpt_dataI
 
 
 # MegatronLM to Huggingface Convertor
+After training we need to convert the Megatron-LM checkpoint files to HF format for evaluation.
+Use the below command for the conversion.
 
 ```bash
 python consolidated_conversion_workflow.py 
