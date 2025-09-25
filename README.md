@@ -7,7 +7,7 @@ This repository contains the code and instructions for training and evaluating m
 
 ## Setup
 
-We use the [Megatron-LM fork](https://github.com/timurcarstensen/Megatron-LM-Open-Sci) as our training framework. Please follow the setup instructions from the repository to:
+We use Megatron-LM as our training framework. Please follow the setup instructions from the repository to:
 - Create a Python environment
 - Install required dependencies
 
