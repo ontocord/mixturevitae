@@ -13,10 +13,6 @@
 
 START_TIME=$(date +%s)
 
-CONDA_ENV="/leonardo_work/AIFAC_L01_028/.cache/envs/hraj0000/dcnlp_py3.10"
-MINICONDA_PATH="/leonardo_work/AIFAC_L01_028/.cache/miniconda/miniconda"
-source ${MINICONDA_PATH}/bin/activate ${CONDA_ENV}
-
 nodes=$(scontrol show hostnames "$SLURM_JOB_NODELIST")
 nodes_array=($nodes)
 
@@ -28,9 +24,6 @@ head_node_i="${head_node}"
 
 head_node_ip="$(nslookup "$head_node_i" | grep -oP '(?<=Address: ).*')"
 echo "Head node: $head_node_ip"
-
-
-export HF_HOME="/leonardo_work/AIFAC_L01_028/.cache"
 
 export TOKENIZERS_PARALLELISM=false
 
@@ -67,12 +60,10 @@ done
 export RAY_ADDRESS="$head_node_ip:$port"
 
 
-MEGATRON_PATH="/leonardo_work/AIFAC_L01_028/hraj0000/work/megatron/Megatron-LM"
+MEGATRON_PATH="mixturevitae/Megatron-LM"
 cd $MEGATRON_PATH
 export PYTHONPATH=$MEGATRON_PATH:$PYTHONPATH
 
-_INPUT="/leonardo_work/AIFAC_L01_028/shared/datasets/language/tokenized/MixtureVitae-300BT-permissive_notriskmitigated"
-_OUTPUT_PREFIX="/leonardo_work/AIFAC_L01_028/shared/datasets/language/tokenized/MixtureVitae-300BT-permissive_notriskmitigated"
 if [ -z "$1" ]; then
   INPUT="$_INPUT"
 else
