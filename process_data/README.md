@@ -1,6 +1,7 @@
 # Data Curation
 
 This folder contains the code for compiling the MixtureVitae dataset. Here are some components and the associated scripts. 
+
 **Note**: The scripts have been tested and used in HPC environments using SLURM jobs.
 
 The main script is `mixture_paper_data_curation.py`. This is the primary data curation pipeline that processes raw text data from multiple sources (Common-Pile, curated datasets, FineFine, Nemo, MAGA, txt360). It performs:
