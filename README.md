@@ -39,4 +39,4 @@ Evaluation scripts are provided in the `eval` folder:
 The decontamination scripts are provided in the `decontamination` folder.
 
 ## Math Word Problems
-The script for generating math word problems is in the `process_data/math_word_problems` folder.
+The script for generating math word problems is in the `math_word_problems` folder.
