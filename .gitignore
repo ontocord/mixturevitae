@@ -93,4 +93,5 @@ logs/
 
 # Misc
 contaminated_results*/
-decontaminate/
+decontaminate/index*
+decontaminate/cleaned_dataset
