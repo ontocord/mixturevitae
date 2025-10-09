@@ -51,8 +51,11 @@ def sanitize(x):
 
 
 def _add_hp(df, mapping_file):
-    root = Path(__file__).parent
-    mapping_path = root / mapping_file
+    if not Path(mapping_file).exists():
+        root = Path(__file__).parent
+        mapping_path = root / "data" / mapping_file
+    else:
+        mapping_path = mapping_file
     
     with open(mapping_path, "r") as f:
         mapping_rows = []
@@ -82,16 +85,18 @@ def format_large_number(num: float):
 def load_data(filename: str, mapping_file: str = "log_dir_name_mapping.jsonl"):
     root = Path(__file__).parent
     
-    # Handle filename with or without extension
-    file_path = root / "data" / filename
-    if not file_path.exists():
-        # Try with .csv extension
-        file_path = root / "data" / f"{filename}.csv"
+    if not Path(filename).exists():
+        file_path = root / "data" / filename
         if not file_path.exists():
-            # Try with .csv.zip extension
-            file_path = root / "data" / f"{filename}.csv.zip"
+            # Try with .csv extension
+            file_path = root / "data" / f"{filename}.csv"
             if not file_path.exists():
-                raise FileNotFoundError(f"Could not find data file: {filename}")
+                # Try with .csv.zip extension
+                file_path = root / "data" / f"{filename}.csv.zip"
+                if not file_path.exists():
+                    raise FileNotFoundError(f"Could not find data file: {filename}")
+    else:
+        file_path = filename
     
     df = pd.read_csv(file_path)
     df = _add_hp(df, mapping_file)

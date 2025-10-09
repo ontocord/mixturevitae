@@ -66,6 +66,7 @@ def plot_avg(
     for i, (ax, size) in enumerate(zip(axes, sizes)):
         df_sub = df_plot.loc[(mask) & (df_plot.loc[:, "size"] == size)].copy()
         df_sub["tokens"] = df_sub["n_iter"] * df_sub["global_batch_size"] * df_sub["seq_length"]
+        
         df_iter = df_sub.pivot_table(index=["dataset", "tokens"], columns="benchmark", values="value").loc[:, bench_sel].mean(axis=1)
         df_iter_pivot = df_iter.reset_index().pivot_table(index="tokens", columns="dataset", values=0)
         
@@ -110,15 +111,15 @@ def plot_avg(
 
 def main():
     parser = argparse.ArgumentParser(description='Plot ablation study for model training')
-    parser.add_argument('--data-file', type=str, default='results-80bt',
-                        help='Data file name (with or without .csv/.csv.zip extension)')
+    parser.add_argument('--data-file', type=str, default='results-100bt',
+                        help='Data file name (should be in /data) or path')
     parser.add_argument('--mapping-file', type=str, default='log_dir_name_mapping.jsonl',
-                        help='Mapping JSONL file name')
-    parser.add_argument('--n-tokens', type=str, default='80B',
-                        help='Number of tokens (e.g., 80B, 1T)')
+                        help='Mapping JSONL file name (should be in /data) or path')
+    parser.add_argument('--n-tokens', type=str, default='100B',
+                        help='Number of tokens (e.g., 100B, 1T)')
     parser.add_argument('--sizes', type=float, nargs='+', default=[0.13, 0.4, 1.3, 1.7],
                         help='Model sizes to plot (e.g., 0.13 0.4 1.3 1.7)')
-    parser.add_argument('--output-name', type=str, default='80B_curated_ablation',
+    parser.add_argument('--output-name', type=str, default='100B_curated_ablation',
                         help='Output file name (without extension)')
     parser.add_argument('--seq-length', type=int, default=4096,
                         help='Sequence length')

@@ -400,7 +400,6 @@ fn filter_contaminated_rust(
     contaminated_ids_path: &str,
     output_path: &str,
 ) -> PyResult<(usize, usize)> {
-    // Load contaminated IDs into a HashSet for fast lookup
     let contaminated_ids: HashSet<String> = {
         let content = std::fs::read_to_string(contaminated_ids_path)
             .map_err(|e| PyValueError::new_err(format!("Failed to read contaminated IDs file: {}", e)))?;

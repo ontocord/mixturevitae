@@ -57,9 +57,9 @@ def plot_per_benchmark(
     # Default dataset order if not provided
     if dataset_order is None:
         dataset_order = [
-            "curated",
-            "wo_paperbook",
-            "wo_codetech",
+            # "curated",
+            # "wo_paperbook",
+            # "wo_codetech",
             "wo_miscurated",
         ]
     dataset_order = [x.lower() for x in dataset_order]
