@@ -3,7 +3,7 @@ MixtureVitae: A Permissive, High-Performance, Open-Access Pretraining Dataset
 
 ## Obtaining dataset
 HuggingFace repositories:
-- [MixtureVitae-211BT](https://huggingface.co/datasets/ontocord/MixtureVitae-211BT)
+- [MixtureVitae-422BT](https://huggingface.co/datasets/ontocord/MixtureVitae-v1)
 
 ## Overview
 
