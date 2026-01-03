@@ -93,7 +93,7 @@ logs/
 
 # Misc
 contaminated_results*/
-decontaminate/index*
+# decontaminate/index*
 decontaminate/cleaned_dataset
 decontaminate/decontam_results
 decontaminate/slurm-out
