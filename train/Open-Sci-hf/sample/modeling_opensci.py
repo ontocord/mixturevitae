@@ -22,7 +22,6 @@ from typing import Callable, List, Optional, Tuple, Union
 import torch
 import torch.utils.checkpoint
 from torch import nn
-
 from transformers.activations import ACT2FN
 from transformers.cache_utils import Cache, DynamicCache, StaticCache
 from transformers.generation import GenerationMixin
@@ -31,9 +30,7 @@ from transformers.modeling_flash_attention_utils import FlashAttentionKwargs
 from transformers.modeling_outputs import (
     BaseModelOutputWithPast,
     CausalLMOutputWithPast,
-    QuestionAnsweringModelOutput,
     SequenceClassifierOutputWithPast,
-    TokenClassifierOutput,
 )
 from transformers.modeling_rope_utils import ROPE_INIT_FUNCTIONS
 from transformers.modeling_utils import ALL_ATTENTION_FUNCTIONS, PreTrainedModel
@@ -41,13 +38,13 @@ from transformers.processing_utils import Unpack
 from transformers.pytorch_utils import ALL_LAYERNORM_LAYERS
 from transformers.utils import (
     LossKwargs,
-    add_code_sample_docstrings,
     add_start_docstrings,
     add_start_docstrings_to_model_forward,
     logging,
     replace_return_docstrings,
 )
 from transformers.utils.deprecation import deprecate_kwarg
+
 from .configuration_opensci import OpensciConfig
 
 

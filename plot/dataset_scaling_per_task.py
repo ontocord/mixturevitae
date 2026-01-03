@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from pathlib import Path
 
-from figure_utils import load_data, bench_sel, metrics, figure_path
+from figure_utils import load_data, metrics, figure_path
 
 
 def plot_per_benchmark(
@@ -57,10 +57,39 @@ def plot_per_benchmark(
     # Default dataset order if not provided
     if dataset_order is None:
         dataset_order = [
-            # "curated",
+            # "arxiv",
+            # "pes2o",
+            # "pubmed",
+            # "wiki",
+            # "europat",
+            # "python_edu_repo",
+            # "science_tech",
+            # "software",
+            # "stackexchange",
+            # "all",
             # "wo_paperbook",
             # "wo_codetech",
-            "wo_miscurated",
+            # "wo_miscurated"
+            # "mixture",
+            # "comma",
+            # "commoncorpus-eng",
+            # "Nemotron-cc-hq",
+            # "DCLM",
+            # "HPLT-2.0",
+            # "FineWeb-Edu-1.4T",
+            # "Pile",
+            # "SlimPajama",
+            # "CommonCorpus",
+            # "C4",
+            # "all",
+            # "wo_europat",
+            # "wo_pyedurepo",
+            # "wo_sciencetech",
+            # "wo_stackexchange",
+            # "wo_arxiv",
+            # "wo_pes2o"
+            "MixtureVitae-300BT-Decontam",
+            "MixtureVitae-300BT"
         ]
     dataset_order = [x.lower() for x in dataset_order]
     
@@ -83,7 +112,7 @@ def plot_per_benchmark(
         ax.set_xlabel("Number of tokens")
         
         if i == 0 or i == n_cols:
-            ax.set_ylabel(f"Downstream performance")
+            ax.set_ylabel("Downstream performance")
         
         # Store the lines and labels from the first plot
         if i == 0:
@@ -94,7 +123,7 @@ def plot_per_benchmark(
     
     # Create a single legend outside the plot
     fig.legend(lines, labels, loc='center right', bbox_to_anchor=(1.03, 0.5))
-    fig.suptitle(f"Performance while training for different datasets", y=0.97)
+    fig.suptitle("Performance while training for different datasets", y=0.97)
     
     # Create output directory if it doesn't exist
     out_dir = Path(output_dir) if output_dir else figure_path()
@@ -108,19 +137,19 @@ def plot_per_benchmark(
 
 def main():
     parser = argparse.ArgumentParser(description='Plot per-benchmark performance for different datasets')
-    parser.add_argument('--data-file', type=str, default='80bt',
+    parser.add_argument('--data-file', type=str, default='results-wo_subparts',
                         help='Data file name (with or without .csv/.csv.zip extension)')
-    parser.add_argument('--mapping-file', type=str, default='log_dir_name_mapping.jsonl',
+    parser.add_argument('--mapping-file', type=str, default='log_dir_name_mapping-wo_subparts.jsonl',
                         help='Mapping JSONL file name')
-    parser.add_argument('--n-tokens', type=str, default='80B',
+    parser.add_argument('--n-tokens', type=str, default='300B',
                         help='Number of tokens (e.g., 80B, 1T)')
     parser.add_argument('--size', type=float, default=1.7,
                         help='Model size to plot')
-    parser.add_argument('--output-name', type=str, default='80B_curated_per_dataset',
+    parser.add_argument('--output-name', type=str, default='100B_wo_subparts_per_dataset',
                         help='Output file name (without extension)')
     parser.add_argument('--seq-length', type=int, default=4096,
                         help='Sequence length')
-    parser.add_argument('--lr-warmup-iters', type=int, default=1000,
+    parser.add_argument('--lr-warmup-iters', type=int, default=25000,
                         help='Learning rate warmup iterations')
     parser.add_argument('--figsize', type=float, nargs=2, default=[16, 6],
                         help='Figure size (width height)')
@@ -150,3 +179,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+    
+# python dataset_scaling_per_task.py --data-file results-parts_removal_ablations.csv --mapping-file log_dir_name_mapping-parts_removal_ablations.jsonl --n-tokens 100B --size 1.7 --output-name 100B_parts_removal_ablation-per_dataset

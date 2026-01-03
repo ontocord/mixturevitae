@@ -5,7 +5,7 @@ from collections import defaultdict
 from pathlib import Path
 from shlex import quote
 from copy import deepcopy
-from slurmpilot import JobCreationInfo, SlurmPilot, unify
+from slurmpilot import JobCreationInfo, unify
 
 
 def load_tasks_from_path(path):

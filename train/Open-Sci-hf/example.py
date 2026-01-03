@@ -1,5 +1,6 @@
-from transformers import AutoModelForCausalLM, AutoConfig, AutoTokenizer
 import torch
+from transformers import AutoConfig, AutoModelForCausalLM, AutoTokenizer
+
 
 model_name = "sample"
 

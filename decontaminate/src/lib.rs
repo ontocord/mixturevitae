@@ -424,6 +424,8 @@ fn filter_contaminated_rust(
             .map_err(|e| format!("Text key '{}' not found in schema: {}", text_key_owned, e.to_string()))?;
         let id_col_idx = id_key_owned.as_ref().and_then(|key| schema.index_of(key).ok());
 
+        let metadata_col_idx = schema.index_of("metadata").ok();
+
         let mut total_processed = 0usize;
         let mut total_kept = 0usize;
         
@@ -441,18 +443,24 @@ fn filter_contaminated_rust(
                 batch.column(idx).as_any().downcast_ref::<StringArray>()
             }).flatten();
 
+            let metadata_array = metadata_col_idx
+                .and_then(|idx| batch.column(idx).as_any().downcast_ref::<StringArray>());
+
             for i in 0..text_array.len() {
                 if !text_array.is_valid(i) { continue; }
                 let packed_text_original = text_array.value(i);
                 if packed_text_original.is_empty() { continue; }
+
                 let packed_text = packed_text_original.replace("<|endoftext}>", "<|endoftext|>");
+
                 let original_id_val = id_array.and_then(|arr| if arr.is_valid(i) { Some(arr.value(i)) } else { None });
+
+                let metadata_val = metadata_array.and_then(|arr| if arr.is_valid(i) { Some(arr.value(i)) } else { None });
 
                 for (sub_doc_index, sub_text) in packed_text.split("<|endoftext|>").enumerate() {
                     if sub_text.is_empty() { continue; }
                     total_processed += 1;
 
-                    // Generate sub_doc_id using same logic as scan_file_rust
                     let sub_doc_id = if let Some(original_id) = original_id_val {
                         if !original_id.is_empty() {
                             format!("{}-part-{}", original_id, sub_doc_index)
@@ -466,11 +474,13 @@ fn filter_contaminated_rust(
                     // Keep only documents NOT in contaminated set
                     if !contaminated_ids.contains(&sub_doc_id) {
                         total_kept += 1;
-                        // Write as JSONL format
+
                         let doc_json = serde_json::json!({
                             "id": sub_doc_id,
-                            "text": sub_text
+                            "text": sub_text,
+                            "metadata": metadata_val.unwrap_or_default(),
                         });
+
                         writeln!(writer, "{}", serde_json::to_string(&doc_json).map_err(|e| e.to_string())?)
                             .map_err(|e| format!("Write error: {}", e))?;
                     }

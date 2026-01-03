@@ -1,152 +1,61 @@
 import mmh3
-import PIL
-import langid
-from PIL import Image
-import os, io
-import multiprocessing
-import glob, random
-import subprocess
-from pathlib import Path
-from tqdm import tqdm
+import os
+import glob
+import random
 import json
-import tarfile
 #from utils import classify_and_quality_score
-import multiprocessing, functools, json, glob
 from flagged_words import *
-from urllib.parse import urlparse
-import string
 import argparse
-from collections import defaultdict
 import sys
 import pyarrow.parquet as pq
-import time, random
-import json, os, glob, random
-import multiprocessing
-from multiprocessing import set_start_method
-import os
+import time
 try:
     sys.path.append(os.path.abspath(os.path.dirname(__file__)))         
 except:
     pass
 import html
 try:
-    import ctranslate2
+    pass
 except:
     pass
-import transformers
-import  itertools
 import os
-import glob, random
-import subprocess
-from pathlib import Path
-from tqdm import tqdm
-import json
-import json, glob, os
-import math
-import functools, json, glob
+import os
 from flagged_words import *
 from collections import Counter
-import string
-import argparse
-from collections import defaultdict
 import sys
-import pyarrow.parquet as pq
-import time, random
-import json, os, glob, random
-from torch import multiprocessing
-from torch.multiprocessing import SimpleQueue
-from torch import threading
 import os
-import json, os, glob
-from tqdm import tqdm
-from typing import List
-import glob, json
+import os
+import os
 import re
-from huggingface_hub import hf_hub_download
-import fasttext
-from multiprocessing import Pool
 from names import *
 
-import multiprocessing, functools, json, glob, langid
 
-import glob, json, langid, random
-import math
-import sys, os, string
+import sys
+import os
 
 
-import wget
-import spacy    
-from nltk.corpus import wordnet as wn
-from lemminflect import getInflection
-import stdnum
-from date_detector import Parser
-import commonregex, re
-from commonregex import CommonRegex
-from faker import Faker
-import spacy
 #from matplotlib import colors
-import fasttext
 #    from frcnn.visualizing_image import SingleImageViz
 #    from frcnn.processing_image import Preprocess as FRCNNPreprocess
 #    from frcnn.modeling_frcnn import GeneralizedRCNN
 #    from frcnn.utils import Config as FRCNNConfig
 #    from frcnn.utils import decode_image as frcnn_decode_image
 #    import cv2
-from nltk.corpus import cmudict
-from autocorrect import Speller
 
 
-import re
-import sys, os
-import re 
-import random
-from string import punctuation, ascii_lowercase
-import gzip
-import tqdm
-from time import sleep
-from typing import Dict, List
+import sys
 import os
-from pathlib import Path
-from tqdm import tqdm
+import os
 import copy
-import json
-import base64
-import uuid
-import hashlib
-import random
-from io import BytesIO
-import numpy as np
-from numpy import asarray
-from collections import deque, Counter
-import numpy as np
-import torch
 #import torchvision
 #from torchvision.transforms.functional import InterpolationMode
-from transformers import AutoModel, AutoTokenizer
-import random
-import itertools
-import torch
-import PIL
-from PIL import Image
-from transformers import pipeline
 #from datasets import load_dataset
-from torch.nn.functional import cosine_similarity
-from transformers import CLIPProcessor, CLIPModel, AutoModel, AutoTokenizer, AutoModelWithLMHead
-from transformers import AutoModelForCausalLM, AutoProcessor, AutoTokenizer
-import numpy as np
-import whoosh.index as whoosh_index
-from whoosh.qparser import QueryParser
-from whoosh.analysis import StemmingAnalyzer, Filter
 
 
-from collections import OrderedDict
-from string import punctuation, ascii_lowercase
-from spacy.tokens import Doc, Span
 
 
 ### BASIC UTILITIES
 
-from collections import Counter
 
 
 def get_ngram(text, window_size=3, lang=""):
@@ -673,7 +582,7 @@ def filter_copyright_and_content_issues(data):
           if 'license_header_footer' not in metadata:
               head_tail = t2[:100].lower() + t2[-100:].lower()
           else:
-              if not (type(metadata['license_header_footer']) is str):
+              if type(metadata['license_header_footer']) is not str:
                   metadata['license_header_footer'] = str(metadata['license_header_footer'])
               head_tail = t2[:100].lower() + t2[-100:].lower() + metadata['license_header_footer'].lower()
           if "(by-nc)" in head_tail or "cc-by-nc" in head_tail or "by-nc-sa" in head_tail or "cc-by-nc-sa" in head_tail or "by-nc-sa" in t2 or "by-sa-nc" in head_tail or \
@@ -879,7 +788,6 @@ citation_patterns = [
         
 ]    
 
-import re
 
 def remove_citations(text):
     cleaned_text = text

@@ -1,7 +1,6 @@
 import random
 import sympy
-import mpmath
-import random, math
+import math
 
 def generate_addition_problems(n_samples):
     problems_and_solutions = []
@@ -387,7 +386,6 @@ def generate_exponential_with_2_numbers_problems(number_of_samples):
     return results_exponential_2_nums
 
 
-import random
 import operator
 
 # Mapping of operations
@@ -444,7 +442,6 @@ def generate_random_math_problems(number_of_samples, min_numbers=3, max_numbers=
 
 
 
-import random
 
 
 def addition_step_by_step1(number_of_samples):
@@ -570,7 +567,6 @@ def addition_step_by_step2(number_of_samples):
     return problems
 
 
-import random
 
 def substraction_step_by_step1(number_of_samples):
 
@@ -703,7 +699,6 @@ def substraction_step_by_step2(number_of_samples):
         explanation += f"So, {num1} - {num2} = {result}."
         problems.append(explanation)
     return problems
-import random
 
 
 def multiplication_step_by_step(number_of_samples):
@@ -854,7 +849,6 @@ def multiplication_step_by_step_short2(number_of_samples):
 
 
 
-import random
 
 def division_step_by_step1(number_of_samples):
     templates = [
@@ -1557,7 +1551,6 @@ def sales_commission2(n_samples):
         problems.append(problem + "\n" + solution)
 
     return problems
-import math
 def age_problem(n_samples):
     problems = []
     for i in range(n_samples):
@@ -1664,27 +1657,27 @@ def generate_math_problems(n_samples):
             problem += "We're trying to figure out how much each notebook and each eraser costs."
 
             # Create step-by-step solution
-            solution = f"Let's solve the problem step by step:\n\n"
-            solution += f"Step 1: Set up the equations:\n"
+            solution = "Let's solve the problem step by step:\n\n"
+            solution += "Step 1: Set up the equations:\n"
             solution += f"   {notebooks1}n + {erasers1}e = {total1}\n"
             solution += f"   {notebooks2}n + {erasers2}e = {total2}\n\n"
-            solution += f"Step 2: Solve the equations simultaneously to find the values of 'n' and 'e'.\n"
+            solution += "Step 2: Solve the equations simultaneously to find the values of 'n' and 'e'.\n"
             solution += f"   Multiply the first equation by {notebooks2} and the second equation by {notebooks1}:\n"
             solution += f"   {notebooks2 * notebooks1}n + {notebooks2 * erasers1}e = {notebooks2 * total1}\n"
             solution += f"   {notebooks1 * notebooks2}n + {notebooks1 * erasers2}e = {notebooks1 * total2}\n"
-            solution += f"   Subtract the second equation from the first equation:\n"
+            solution += "   Subtract the second equation from the first equation:\n"
             solution += f"   {notebooks2 * notebooks1 - notebooks1 * notebooks2}n + {notebooks2 * erasers1 - notebooks1 * erasers2}e = {notebooks2 * total1 - notebooks1 * total2}\n"
-            solution += f"   Simplify the equation:\n"
+            solution += "   Simplify the equation:\n"
             solution += f"   0n + {notebooks2 * erasers1 - notebooks1 * erasers2}e = {notebooks2 * total1 - notebooks1 * total2}\n"
-            solution += f"   Solve for 'e':\n"
+            solution += "   Solve for 'e':\n"
             solution += f"   e = {(notebooks2 * total1 - notebooks1 * total2) / (notebooks2 * erasers1 - notebooks1 * erasers2)}\n"
-            solution += f"   Substitute 'e' into the first equation to find 'n':\n"
+            solution += "   Substitute 'e' into the first equation to find 'n':\n"
             solution += f"   {notebooks1}n + {erasers1} * {(notebooks2 * total1 - notebooks1 * total2) / (notebooks2 * erasers1 - notebooks1 * erasers2)} = {total1}\n"
-            solution += f"   Simplify the equation:\n"
+            solution += "   Simplify the equation:\n"
             solution += f"   {notebooks1}n + {(erasers1 * (notebooks2 * total1 - notebooks1 * total2)) / (notebooks2 * erasers1 - notebooks1 * erasers2)} = {total1}\n"
-            solution += f"   Solve for 'n':\n"
+            solution += "   Solve for 'n':\n"
             solution += f"   n = {total1 - (erasers1 * (notebooks2 * total1 - notebooks1 * total2)) / (notebooks2 * erasers1 - notebooks1 * erasers2) }\n\n"
-            solution += f"The cost of each notebook and each eraser:\n"
+            solution += "The cost of each notebook and each eraser:\n"
             solution += f"   Cost of each notebook = {total1 - (erasers1 * (notebooks2 * total1 - notebooks1 * total2)) / (notebooks2 * erasers1 - notebooks1 * erasers2) }\n"
             solution += f"   Cost of each eraser = {(notebooks2 * total1 - notebooks1 * total2) / (notebooks2 * erasers1 - notebooks1 * erasers2)} \n"
             problems.append(problem + "\n" + solution)
@@ -1953,7 +1946,7 @@ def generate_linear_functions(n_samples):
         # Step-by-step explanation:
         text = []
         text.append(f"Calculating y for x = {round(x,4)}")
-        text.append(f"y = y_intercept + slope * x")
+        text.append("y = y_intercept + slope * x")
         text.append(f"y = {round(y_intercept,4)} + {round(slope,4)} * {x}")
         intermediate_step = slope * x
         text.append(f"Intermediate Step: {round(slope,4)} * {x} = {round(intermediate_step,4)}")

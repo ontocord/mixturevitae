@@ -95,3 +95,9 @@ logs/
 contaminated_results*/
 decontaminate/index*
 decontaminate/cleaned_dataset
+decontaminate/decontam_results
+decontaminate/slurm-out
+cleaned_dataset/mixtuevitae211bt-clean
+cleaned_dataset-wo_metadata
+
+plot/data/*.csv

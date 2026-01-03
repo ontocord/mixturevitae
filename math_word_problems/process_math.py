@@ -1,4 +1,5 @@
-import json, random
+import json
+import random
 curr = 0
 i0 = 0
 prev_data = None

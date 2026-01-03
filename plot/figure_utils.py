@@ -5,6 +5,7 @@ import pandas as pd
 
 metrics = [
     "mmlu/acc",
+    # "mmlu_continuation/acc",
     # "mmlu_pro/exact_match,custom-extract",
     "copa/acc",
     "lambada_openai/acc",

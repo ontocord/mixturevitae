@@ -1,11 +1,6 @@
 import random
-import sympy
-import mpmath
 import mathfunctions
 import inspect
-import itertools
-import random
-import argparse
 import tqdm
 
 # Get all global functions from the mathfunctions module
