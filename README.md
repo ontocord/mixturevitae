@@ -50,5 +50,5 @@ Evaluation scripts are provided in the `eval` folder:
 
 ## Reproducing paper plots
 
-To reproduce main plots in the paper, see [plot folder](https://github.com/ontocord/mixturevitae/tree/main/plot)
+To reproduce main plots in the [paper](https://arxiv.org/abs/2509.25531), see [plot folder](https://github.com/ontocord/mixturevitae/tree/main/plot)
 
