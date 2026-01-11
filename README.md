@@ -3,7 +3,7 @@ MixtureVitae: A Permissive, High-Performance, Open-Access Pretraining Dataset
 
 ## Obtaining dataset
 HuggingFace repositories:
-- [MixtureVitae-422BT](https://huggingface.co/datasets/ontocord/MixtureVitae-v1)
+- MixtureVitae v1, 422B tokens: [MixtureVitae-422BT](https://huggingface.co/datasets/ontocord/MixtureVitae-v1)
 
 ## Overview
 
@@ -14,6 +14,15 @@ This repository contains the code and instructions for training and evaluating m
 We use Megatron-LM as our training framework. Please follow the setup instructions from the repository to:
 - Create a Python environment
 - Install required dependencies
+
+## Data Curation
+The script containing the data curation pipeline that processes raw text data from multiple sources (Common-Pile, curated datasets, FineFine, Nemo, MAGA, txt360) is in `process_data` folder.
+
+### Synthetic Math Word Problems
+The script for generating math word problems is in the `math_word_problems` folder. Specifically, `math_word_problems/generate_math.py` creates synthetic math word problems.
+
+## Decontamination
+The decontamination scripts are provided in the `decontamination` folder.
 
 ## Tokenization
 
@@ -39,11 +48,7 @@ Evaluation scripts are provided in the `eval` folder:
 - We use the `lm-evaluation-harness` framework for all benchmarks
 - Automated scripts for efficient SLURM job submission on HPC systems
 
-## Decontamination
-The decontamination scripts are provided in the `decontamination` folder.
+## Reproducing paper plots
 
-## Math Word Problems
-The script for generating math word problems is in the `math_word_problems` folder. Specifically, `math_word_problems/generate_math.py` creates synthetic math word problems.
+To reproduce main plots in the paper, see [plot folder](https://github.com/ontocord/mixturevitae/tree/main/plot)
 
-## Data Curation
-The script containing the data curation pipeline that processes raw text data from multiple sources (Common-Pile, curated datasets, FineFine, Nemo, MAGA, txt360) is in `process_data` folder.
