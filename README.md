@@ -1,5 +1,6 @@
 # MixtureVitae
 MixtureVitae: A Permissive, High-Performance, Open-Access Pretraining Dataset
+[[ArXiv:2509.25531]](https://arxiv.org/abs/2509.25531)
 
 ## Obtaining dataset
 HuggingFace repositories:
