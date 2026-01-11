@@ -87,7 +87,7 @@ logs/
 *.cache
 
 # Archives
-*.zip
+# *.zip
 *.tar.gz
 *.rar
 
@@ -99,5 +99,3 @@ decontaminate/decontam_results
 decontaminate/slurm-out
 cleaned_dataset/mixtuevitae211bt-clean
 cleaned_dataset-wo_metadata
-
-plot/data/*.csv
