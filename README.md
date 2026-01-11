@@ -7,7 +7,7 @@ HuggingFace repositories:
 
 ## Overview
 
-This repository contains the code and instructions for training and evaluating models using the MixtureVitae dataset. Our training framework utilizes a fork of NVIDIA's Megatron-LM for large-scale model training.
+This repository contains the code and instructions for training and evaluating models using the MixtureVitae dataset. We utilize NVIDIA's Megatron-LM for large-scale model distributed training.
 
 ## Setup
 
