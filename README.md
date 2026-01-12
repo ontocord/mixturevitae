@@ -1,6 +1,10 @@
 # MixtureVitae
 MixtureVitae: A Permissive, High-Performance, Open-Access Pretraining Dataset. [[ArXiv:2509.25531]](https://arxiv.org/abs/2509.25531)
 
+## Artefacts for reproduction
+
+Models and datasets used for the study can be obtained via this collection : https://huggingface.co/collections/laion/mixturevitae-study-models-and-datasets
+
 ## Obtaining dataset
 HuggingFace repositories:
 - MixtureVitae v1, 422B tokens: [MixtureVitae-422BT](https://huggingface.co/datasets/ontocord/MixtureVitae-v1)
