@@ -25,4 +25,4 @@ python launch_eval.py
 ## Notes
 
 - Replace all placeholders (e.g., `<cluster_name>`, `<cache_path>`, `<partition>`, `<account>`) with actual paths
-- Include the absolute paths of all the checkpoints (line seperated) to evaluate in `model_to_eval.txt`
+- Include the absolute paths of all the checkpoints (line separated) to evaluate in `model_to_eval.txt`
