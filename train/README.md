@@ -30,6 +30,14 @@ IMAGE=${SHARED_CONTAINERS}/pytorch_24.09-py3.sif
 
 ## Training Commands
 
+The general command template is
+
+```bash
+source megatron_exp_data-NAME.sh NODES_NUM TOKENS_NUM MICRO_BS GAS CONTEXT_LENGTH LR_SCHEDULE_TYPE LR END_LR WARMUP_ITERS SAVE_INTERVAL_ITERS DATASET TOKENIZER DATA_CHUNKS
+```
+
+where NODES_NUM: number of compute nodes; TOKENS_NUM: tokens for training; MICRO_BS: local batch size per GPU; GAS: gradient accumulation steps; CONTEXT_LENGTH: model context length; LR_SCHEDULE_TYPE: learning rate schedule; LR: peak learning rate; END_LR: end learning rate; WARMUP_ITERS: warm up iterations (steps); SAVE_INTERVAL_ITERS: checkpoint saving interval; DATASET: dataset name;  TOKENIZER: tokenizer name; DATA_CHUNKS: N - 1, where N: number of chunks the dataset is split into
+
 ### 50BT Training Runs
 
 #### 1.7B Model
