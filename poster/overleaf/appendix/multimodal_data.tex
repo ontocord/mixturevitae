@@ -1,0 +1,9 @@
+\section{Text Extracted From Multimodal Data}
+\label{app:Multimodal data generated}
+Two subsets of our data, the Europat subset and the Youtube subset includes text synthetic data that we generated using off-the-shelf multimodal models. We sourced the data from governmental sources and CC-BY-SA content from Youtube from VALID~\citep{Huu2024VALID}.
+
+VALID includes text captions generated of key-frames of the videos using the captioning model, Florence-Large, and text transcription of the audio using OpenAI's Whisper large, with text data presented in an interleaved formatting. For our data set, we added VALID by adding speaker emotion labeling using https://huggingface.co/cahya/whisper-medium-emotion-v2.0. We also generated question answer pairs using Qwen2.5-7B-Instruct based on the text only of the above data, and a simple prompt to generate questions based on the text, and answer the question. 
+
+For Europat, we sampled a portion of the beginning of a patent which may be in English or other EU languages, used this text as a pseudo-image description, used Flux-Schnell to generate images based on this text, and then captioned the image using Florence-Large. We prepend the generated captions to a sample of the patents. 
+
+All of the above models used to generate synthetic data for these data subsets have a permissive licensing. 

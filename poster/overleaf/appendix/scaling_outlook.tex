@@ -1,0 +1,16 @@
+\section{Scaling Outlook and Future Directions}
+\label{app:scaling_outlook}
+
+While \MixtureVitae{} currently comprises \DatasetSize{} billion tokens---a scale smaller than frontier runs which often exceed 10 trillion tokens---our primary objective in this work was to establish a proof-of-concept for data efficiency and strong downstream performance within a strict permissive-first, risk-mitigated licensing framework. We identify several concrete avenues to scale this approach to the multi-trillion token regime required for larger foundation models:
+
+\paragraph{Subset Upsampling.} 
+Standard industry recipes for large-scale training often heavily upsample high-quality data. For instance, Llama~3~\citep{Meta2024_Llama3} employs upsampling factors of 4--10$\times$ for its highest-quality subsets to reach its training budget. In contrast, the current iteration of \MixtureVitae{} does not assign aggressive upsampling factors to individual shards. Applying standard upsampling techniques to our highest-value subsets (such as curated reasoning) would immediately scale their contribution to the total token count.
+
+\paragraph{Multilingual Expansion.} 
+The current release of \MixtureVitae{} is primarily English-centric. Expanding the sourcing strategy to include multilingual data represents an order-of-magnitude opportunity for scaling. This can be achieved through two primary methods: (1) identifying and allowing international permissively licensed sources, and (2) using machine translation to expand the existing data in \MixtureVitae{}.
+
+\paragraph{Synthetic Expansion.} 
+Our Math and Reasoning synthetic subsets are generated procedurally or via LLMs. This generation process is horizontally scalable. By increasing the compute budget for generation, these high-density subsets can be expanded significantly without incurring the legal risks associated with scraping organic web data.
+
+\paragraph{Web Data Rephrasing.} 
+Recent work has demonstrated the utility of rephrasing web data to improve quality and standardize style \citep{maini2024rephrasing}. Applying a similar rephrasing pipeline on top of the \MixtureVitae{} web data processing pipeline can further expand the corpus volume while maintaining the strict safety and licensing standards defined in our framework.

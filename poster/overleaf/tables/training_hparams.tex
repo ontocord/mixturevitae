@@ -1,0 +1,20 @@
+\begin{table*}[htbp]
+\centering
+\caption{The training schedules used in our experiments.}
+\label{tab:training_schedules}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{@{}l c c c c c@{}}
+\toprule
+\textbf{Tokens} &
+\textbf{\makecell[c]{Global Batch Size \\ (tokens)}} &
+\textbf{Iterations} &
+\textbf{\makecell[c]{Learning \\ Rate}} &
+\textbf{Warmup} &
+\textbf{\makecell[c]{Cooldown \\ (20\%)}} \\
+\midrule
+50B  & 4.12M & 11,921  & $4\times10^{-3}$ & 1,000  & 2,384  \\
+300B & 4.12M & 72,661  & $4\times10^{-3}$ & 25,000 & 14,532 \\
+\bottomrule
+\end{tabular}
+
+\end{table*}

@@ -1,0 +1,227 @@
+
+\documentclass[10pt]{article}
+\usepackage{tmlr}
+
+\usepackage{times}
+\usepackage{authblk}
+% Optional math commands from https://github.com/goodfeli/dlbook_notation.
+\input{math_commands.tex}
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage[hidelinks]{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{xcolor}         % colors
+\usepackage{graphicx}       % graphicx
+\usepackage{tabularx}
+\usepackage{subcaption}
+\usepackage[table]{xcolor}
+% \usepackage{booktabs}
+% \usepackage{graphicx}
+\usepackage{makecell}
+% \usepackage{hyperref}
+% \usepackage{url}
+\usepackage{svg}
+% \usepackage{graphicx}
+% \usepackage{subcaption}
+\usepackage{multirow}
+\usepackage{siunitx}
+\usepackage{amssymb}       % For \blacksquare symbol
+\usepackage{nicematrix}    % For advanced table formatting
+
+
+% --- Commands for the table symbols and layout ---
+\newcommand{\major}{$\blacksquare$}
+\newcommand{\minor}{+}
+%\usepackage{subfigure}
+
+% --- PREAMBLE: Ensure these are in your main .tex file ---
+\usepackage{tikz}
+% \usepackage{comicneue}
+\usetikzlibrary{positioning, fit, shapes.geometric, arrows.meta, shadows.blur}
+
+% \usepackage{hyperref}
+% \usepackage{url}
+\usepackage{longtable}
+\usepackage{caption}
+
+\newcommand{\MixtureVitae}{\textcolor{teal}{\textbf{\mbox{MixtureVitae}}}}
+\newcommand{\DatasetSize}{\textbf{422}}
+
+
+
+% START - for writing comments
+
+% --- Personal comments (toggleable) -------------------------
+\usepackage{xcolor}
+\usepackage{etoolbox} % for \newtoggle
+% \newtoggle{comments}
+% \toggletrue{comments}     % set \togglefalse{comments} before submission
+
+% \newcommand{\commentcolor}{red!65!black}
+% \newcommand{\DefaultInitials}{VM} % <-- your initials
+
+% \newcommand{\HRInitials}{HR}
+% \newcommand{\UseHR}{\renewcommand{\DefaultInitials}{HR}}
+
+% Inline comment: \cmt{...} or \cmt[AB]{...}
+% \makeatletter
+% \newcommand{\cmt}[2][]{%
+%   \iftoggle{comments}{%
+%     % choose initials: optional arg or default
+%     \def\cmt@init{\if\relax\detokenize{#1}\relax \DefaultInitials \else #1\fi}%
+%     % render safely in text or math
+%     \ifmmode
+%       \text{\color{\commentcolor}\footnotesize\bfseries[\cmt@init:~#2]}%
+%     \else
+%       {\color{\commentcolor}\footnotesize\bfseries[\cmt@init:~#2]}%
+%     \fi
+%   }{}%
+% }
+% \makeatother
+
+% Margin comment: \mcmt{...} or \mcmt[AB]{...}
+% \newcommand{\mcmt}[2][]{%
+%   \iftoggle{comments}{%
+%     \marginpar{\raggedright\color{\commentcolor}\scriptsize
+%       \if\relax\detokenize{#1}\relax \DefaultInitials \else #1\fi:~#2}%
+%   }{}%
+% }
+
+% Block comment environment:
+% \begin{cblock}[AB] ... \end{cblock}
+% \newenvironment{cblock}[1][]%
+%   {\iftoggle{comments}{%
+%      \par\begingroup\color{\commentcolor}\footnotesize\bfseries
+%      \noindent[\if\relax\detokenize{#1}\relax \DefaultInitials \else #1\fi]\quad
+%    }{\expandafter\cblock@swallow}}%
+%   {\iftoggle{comments}{\par\endgroup}{}}
+% \newenvironment{cblock@swallow}{}{}
+% END - for writing comments
+
+\title{MixtureVitae: Open Web-Scale Pretraining Dataset With High Quality Instruction and Reasoning Data Built from Permissive-First Text Sources}
+
+% MixtureVitae: A Risk‑Mitigated, High‑Quality, Open‑Access Pretraining Corpus Built from Permissive‑First Sources
+
+% Authors must not appear in the submitted version. They should be hidden
+% as long as the \iclrfinalcopy macro remains commented out below.
+% Non-anonymous submissions will be rejected without review.
+
+% \author{Huu Nguyen, Harsh Raj \& Amelie P. Amygdale \thanks{ Use footnote for providing further information
+% about author (webpage, alternative address)---\emph{not} for acknowledging
+% funding agencies.  Funding acknowledgements go at the end of the paper.} \\
+% Department of Computer Science\\
+% Cranberry-Lemon University\\
+% Pittsburgh, PA 15213, USA \\
+% \texttt{\{hippo,brain,jen\}@cs.cranberry-lemon.edu} \\
+% \And
+% Ji Q. Ren \& Yevgeny LeNet \\
+% Department of Computational Neuroscience \\
+% University of the Witwatersrand \\
+% Joburg, South Africa \\
+% \texttt{\{robot,net\}@wits.ac.za} \\
+% \AND
+% Coauthor \\
+% Affiliation \\
+% Address \\
+% \texttt{email}
+% }
+
+% The star (*) denotes equal contribution
+% \author[1,3,4,*]{Huu Nguyen}
+% \author[1,*]{Victor May}
+% \author[1,2,*]{Harsh Raj}
+% \author[1,3,4,5]{Marianna Nezhurina}
+% \author[1, 6]{Yishan Wang}
+% \author[7]{Yanqi Luo}
+% \author[8]{Minh Chien Vu}
+% \author[4,9]{Taishi Nakamura}
+% \author[4,15]{Ken Tsui}
+% \author[10]{Van Khue Nguyen}
+% \author[11,12]{David Salinas}
+% \author[13]{Aleksandra Krasnodębska}
+% \author[3]{Christoph Schuhmann}
+% \author[14]{Mats Leon Richter}
+% \author[16]{Xuan-Son (Sonny) Vu}
+% \author[1,3,4,5]{Jenia Jitsev}
+
+% \affil[*]{Equal contribution}
+% Add a line for correspondence emails. Using an unnumbered affiliation keeps it clean.
+% \affil[ ]{\textit{Correspondence to: \href{mailto:huu@ontocord.ai}{huu@ontocord.ai}}}
+% \affil[1]{Ontocord}
+% \affil[2]{Northeastern University}
+% \affil[3]{LAION}
+% \affil[4]{Open-$\Psi$ (Open-Sci) Collective}
+% \affil[5]{Juelich Supercomputing Center (JSC), Research Center Juelich (FZJ)}
+% \affil[6]{Carnegie Mellon University}
+% \affil[7]{Salesforce}
+% \affil[8]{Detomo Inc.}
+% \affil[9]{Institute of Science Tokyo}
+% \affil[10]{École Polytechnique, IP Paris}
+% \affil[11]{ELLIS Institute Tuebingen}
+% \affil[12]{University of Freiburg}
+% \affil[13]{NASK}
+% \affil[14]{Montreal Institute for Learning Algorithms, University of Montreal, Université de Montréal}
+% \affil[15]{Independent Researcher}
+% \affil[16]{RSS Lab, LTH / DeepTensor AB}
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to \LaTeX{} to determine where to break
+% the lines. Using \AND forces a linebreak at that point. So, if \LaTeX{}
+% puts 3 of 4 authors names on the first line, and the last on the second
+% line, try using \AND instead of \And before the third author name.
+
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+
+% \captionsetup[longtable]{justification=centering}
+
+% \iclrfinalcopy % Uncomment for camera-ready version, but NOT for submission.
+
+\begin{document}
+
+
+\maketitle
+
+\begin{abstract}
+\input{sections/abstract}
+\end{abstract}
+
+\input{sections/intro}
+\input{sections/dataset}
+\input{sections/experiments}
+\input{sections/ablations}
+\input{sections/related_work}
+\input{sections/conclusion}
+
+
+
+
+\bibliography{main_bibliography, added}
+\bibliographystyle{tmlr}
+
+\clearpage
+
+\begin{center}
+{\Large\bf Appendix: MixtureVitae -- Open Web-Scale Pretraining Dataset With High Quality Instruction and Reasoning Data Built from Permissive Text Sources}
+\end{center}
+
+\appendix
+\input{sections/reproducibility}
+\input{appendix/dataset_composition}
+\input{appendix/training_params}
+\input{appendix/extra_experiments}
+\input{appendix/contamination}
+\input{appendix/mwp}
+\input{appendix/legal_opinion}
+\input{appendix/stack}
+\input{appendix/data_filtering}
+\input{appendix/synth_prov}
+\input{appendix/scaling_outlook}
+\end{document}

@@ -1,0 +1,146 @@
+\section{Data Filtering Reasoning and Protocol}
+To promote transparency, we describe our protocol for defining and checking the lists and content of the pseudo-crawled portion of \MixtureVitae{}.
+
+\subsection{Governmental and NGO Domain Patterns}
+\label{app:gov_domains}
+The following list of URL patterns was used to filter for governmental, non-governmental, and international organization websites from the web datasets. We gathered the list by examining public records, Wikipedia lists, and the like. The list is not as simple as \textbf{gov.} because international governments use different TLDs. Moreover, some spam websites masquerades as \textbf{{.gov}} websites. 
+Two of the authors examined each domain either online or through the \textit{Internet Archives' Wayback Machine} to confirm they belonged to a government website. After performing a pseudo-crawl on FineFineWeb, Nemotron-CC and MGACorpus, the authors manually audited the data for quality, and filtered out spam websites with similar website names, which were added to blocklists. 
+
+The\textbf{ .gov, .gov/, and .mil/ }websites are US Federal governmental works. To the extent we could, we filtered any sites that had keywords indicating reservations of rights. We believe this lowers the risk of inadvertent third party copyrighted works appearing on US Federal works, and is in the spirit of the EU text data mining opt-out conventions. We also note that the ultimate source of these websites is from Common Crawl which already also respects the \textit{robots.txt} opt-out.
+{\footnotesize
+\begin{itemize}
+    \item  \texttt{gov} (as a suffix)
+    \item \texttt{gov/}
+    \item \texttt{mil/}
+\end{itemize}
+}
+
+All other websites in this category are specifically international governments or NGOs. 
+
+
+{\footnotesize
+    \texttt{vlada.mk},
+    \texttt{vlada.cz},
+    \texttt{kormany.hu},
+    \texttt{regeringen.*},
+    \texttt{rijksoverheid.nl},
+    \texttt{government.nl},
+    \texttt{bund.de},
+    \texttt{bundesregierung.de},
+    \texttt{government.ru},
+    \texttt{gc.ca},
+    \texttt{admin.ch},
+    \texttt{www.gob.cl/},
+    \texttt{www.gob.ec/},
+    \texttt{guatemala.gob.gt/},
+    \texttt{presidencia.gob.hn/},
+    \texttt{www.gob.mx/},
+    \texttt{presidencia.gob.pa/},
+    \texttt{www.gob.pe/},
+    \texttt{gob.es/},
+    \texttt{argentina.gob.ar/},
+    \texttt{tanzania.go.tz/},
+    \texttt{indonesia.go.id/},
+    \texttt{go.kr/},
+    \texttt{go.jp/},
+    \texttt{thailand.go.th/},
+    \texttt{europa.eu/},
+    \texttt{un/},
+    \texttt{int/},
+    \texttt{govt.},
+    \texttt{www.gub.uy},
+    \texttt{gov.},
+    \texttt{gouv.}
+}
+
+\subsection{Curated Permissive Domain List}
+\label{app:permissive_domains}
+The following list of approximately 50 domains was curated based on their known public domain or CC-BY-SA* license status or a permissive status. The websites were chosen for their diversity of content.  Two of the authors---one of which has a legal background---examined the websites' terms of use, or relevant sections online or on the Way Back Machine to confirm licensing and permission status.  After performing a pseudo-crawl on FineFineWeb, Nemotron-CC and MGACorpus, the authors manually reviewed the data for quality, and filtered out spam websites with similar website names as the below. These spam sites  were added to blocklists. 
+{\footnotesize
+
+     \texttt{free.law}, \texttt{europeana.eu},
+    \texttt{publicdomainreview.org},
+    \texttt{wisdomcommons.org},
+    \texttt{intratext.com},
+    \texttt{mediawiki.org},
+    \texttt{wikimedia.org},
+    \texttt{wikidata.org},
+    \texttt{wikipedia.org},
+    \texttt{wikisource.org},
+    \texttt{wikifunctions.org},
+    \texttt{wikiquote.org},
+    \texttt{wikinews.org},
+    \texttt{wikivoyage.org},
+    \texttt{wiktionary.org},
+    \texttt{wikibooks.org},
+    \texttt{courtlistener.com/\footnote{For \texttt{courtlistener.com}, the terms of use says it is CC-BY-ND, but the underlying court cases are public domain, and the content from this website is merely 176KB and is de minimis.}},
+    \texttt{case.law},
+    \texttt{pressbooks.oer.hawaii.edu},
+    \texttt{huggingface.co/docs},
+    \texttt{opencourselibrary.org},
+    \texttt{medbiq.org},
+    \texttt{doabooks.org},
+    \texttt{bccampus.ca},
+    \texttt{open.umn.edu/opentextbooks},
+    \texttt{www.gutenberg.org},
+    \texttt{mozilla.org},
+    \texttt{www.eclipse.org},
+    \texttt{apache.org},
+    \texttt{python.org},
+    \texttt{pytorch.org},
+    \texttt{numpy.org},
+    \texttt{scipy.org},
+    \texttt{opencv.org},
+    \texttt{scikit-learn.org},
+    \texttt{pydata.org},
+    \texttt{matplotlib.org},
+    \texttt{palletsprojects.com},
+    \texttt{sqlalchemy.org},
+    \texttt{pypi.org},
+    \texttt{sympy.org},
+    \texttt{nltk.org},
+    \texttt{scrapy.org},
+    \texttt{owasp.org},
+    \texttt{creativecommons.org},
+    \texttt{wikia.com},
+    \texttt{foodista.com},
+    \texttt{fandom.com},
+    \texttt{attack.mitre.org}
+
+}
+
+
+The vast majority of these sites are CC-BY licensed. However, there are some that have other open licenses as shown in Table~\ref{tab:licenses}.
+
+\begin{table}[ht]
+\caption{Software Licenses and Associated Websites}
+
+\centering
+\begin{tabular}{|l|l|}
+\hline
+\textbf{License} & \textbf{Websites} \\
+\hline
+BSD 3-Clause & \begin{tabular}[t]{@{}l@{}}
+scipy.org, sympy.org, matplotlib.org, scrapy.org, \\
+scikit-learn.org, pydata.org, pytorch.org, \\
+palletsprojects.com
+\end{tabular} \\
+\hline
+Mozilla Public License & mozilla.org \\
+\hline
+Python Software Foundation License 2.0 & python.org \\
+\hline
+Apache 2.0 & apache.org, nltk.org, opencv.org \\
+\hline
+MIT License & sqlalchemy.org \\
+\hline
+Eclipse Public License & www.eclipse.org \\
+\hline
+MedBiquitous Standards Public License & medbiq.org \\
+\hline
+\end{tabular}
+\label{tab:licenses}
+\end{table}
+
+
+

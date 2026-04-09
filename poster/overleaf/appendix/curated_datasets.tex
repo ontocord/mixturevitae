@@ -1,0 +1,57 @@
+\section{Curated Datasets}
+\label{app:curated}
+\begin{itemize}
+\item \textbf{Open License Corpus (OLC)}: We were heavily inspired by the OLC corpus. This dataset supports domain-specific learning in areas such as law, science, and technology. All data is sourced from permissively licensed material (e.g., CC-BY). We include selected sources across eight domains, including legal texts such as case law (public domain) and the Pile of Law (CC BY-SA subset); arXiv abstracts and subsets of S2ORC (public domain and CC BY-SA); open access academic papers from peS2o~\citep{peS2o}; news sources such as public domain news and Wikinews (CC BY-SA); and encyclopedic entries from Wikipedia (CC BY-SA). We collected and further cleaned and reformatted a subset of this collection and/or removed certain citations that are likely too difficult for models to memorize reliably.
+
+\item \textbf{WebSight}: The Websights dataset comprises synthetically generated HTML/CSS code representing English websites, each accompanied by a corresponding screenshot. It serves as a valuable resource for tasks such as generating user interface code from visual inputs. We rephrased the WebSights dataset so that it is framed as instructions and responses.
+
+\item \textbf{PG-19}: We incorporated data from PG-19, comprising 28,752 books from Project Gutenberg published before 1919. This dataset serves as a valuable resource for training models to capture long-range dependencies in text. We use TXT360's version of PG-19, and we further created shards of the books that are roughly 4096 tokens. [HHN: not explicitly included, but it is in the web crawled version]
+
+\item \textbf{Freelaw}: Sourced from The Pile, this dataset comprises legal documents which improves the models knowledge about the law.
+
+\item \textbf{StackV1}: We included several subsets of the stack v1 dataset, modifying them removing headers to remove duplicate text. We further created a subset by clustering certain portions based on minhash and concatenating similar documents into single examples. Specifically, we flattened the python-edu portion by combining files from the same repository into a single example. Specifically, we included the following programming languages: Antlr, AppleScript, Awk, Batchfile, Clojure, CMake, CoffeeScript, Common Lisp, C/C++, C\#, Emacs Lisp, Fortran, Go, Java, JavaScript, Jupyter scripts and structured data, Makefile, Mathematica, Perl, Python, Rust, Scheme, Shell, SQL, Tcl, TypeScript, and Yacc. We also included multilingual code to enhance language diversity. In addition to code, we incorporated non-coding data formats such as Markdown, HTML, and JSON to provide structured documentation.
+
+\item \textbf{Euro-Pat}: A parallel multilingual dataset comprising patent documents from the United States Patent and Trademark Office (USPTO) and the European Patent Organisation (EPO). It aligns patents from different countries within the same "family," providing multilingual context. To further enrich this resource, we have generated synthetic images corresponding to the patent documents.
+
+\item \textbf{USPTO Data}: Derived from TXT360 and The Pile and further cleaned for use in Aurora-m1, this dataset provides a comprehensive collection of U.S. patent documents.
+
+%\item \textbf{COCO Captions}: We recaptioned the coco-2017 dataset, commonly used to develop models for multimodal understanding. \cmt[VM]{Need more details. why and how recaptioned?} [HHN: not included in 300BT]
+
+%\item \textbf{OIG}: We included certain subsets of the OIG dataset, rephrased with a LLM. Specifically, we incorporated the Unified SQL, Unified SKG, Abstract-Infil and Canadian Parliament subset of the OIG dataset. [HHN: not currently included in 300BT]
+
+%\item \textbf{Europarl}: A parallel corpus sourced from TxT360 extracted from the proceedings of the European Parliament, covering 21 European languages. [HHN: not currently included. out of date.]
+
+\item \textbf{10-K Filings}: A dataset comprises a collection of 10-K filings, which are comprehensive annual reports filed by publicly traded companies to the U.S. Securities and Exchange Commission (SEC). These documents provide detailed insights into a company's financial performance, risk factors, and management discussions.
+
+\item \textbf{Atticus}: A comprehensive, expert-annotated dataset designed for research in legal contract review. It includes over 13,000 annotations across 510 commercial legal contracts, focusing on 41 categories of clauses deemed crucial in corporate transactions such as mergers and acquisitions.
+
+
+%\item \textbf{Hackernews}: Sourced from OLC and TxT360, this dataset includes discussions and articles from the Hacker News platform. [HHN: Not included in this version or future versions b/c of copyright issues]
+
+\item \textbf{StackExchange}: A dataset comprising of publicly available data from the Stack Exchange network, including users' questions, answers, comments, and associated metadata. We included RedPajamav1's and TxT360's Stack Exchange dataset, encompassing a wide range of topics from the Stack Exchange network.
+
+%\item \textbf{Openwebmath}: An open dataset of high-quality mathematical web text, containing 14.7 billion tokens extracted from mathematical webpages, intended for training language models in mathematical reasoning. [HHN: Not included]
+
+\item \textbf{Wikibooks}: A Wikimedia project that offers a collection of open-content textbooks and manuals across various subjects, including computing, science, humanities, and more. The content is collaboratively written and freely available under Creative Commons licenses.
+
+\item \textbf{Pubmed Abstracts}: A dataset comprising abstracts from biomedical literature, sourced from PubMed. It includes millions of abstracts detailing research across various biomedical fields. This dataset was obtained from the Pile and TxT360 datasets.
+
+\item \textbf{Pubmed Centra Permissivel}: A free digital archive of full-text biomedical and life sciences journal literature. The dataset includes articles made available under licenses that permit text mining and other forms of reuse. We extracted the permissive (cc-by, etc.) from Common Pile.
+
+%\item \textbf{NIH ExPorter}: A dataset includes administrative data on NIH-funded research projects. It provides detailed information on awarded grants, including abstracts, funding amounts, and project durations. This data was processed from the Pile dataset. [HHN: not included explicityly b/c of potential copyright issues. This is in the .gov data but we explicitly removed web documents that says "all rights reserved"]
+
+\item \textbf{Elsevier-oa-cc-by}: This corpus comprises over 40,000 open-access articles from Elsevier journals, available under the CC-BY license. It spans a wide range of scientific disciplines, such as medicine, biology, chemistry, physics, and engineering.
+
+%\item \textbf{Clap Synthetic Captions}: The CLAP dataset provides synthetic captions for audio clips, generated using advanced audio-language models. Includes captions for a large number of audio clips, with each clip accompanied by multiple synthetic captions. [HHN: Not in this version. Will be in the multinodal version.]
+
+\item \textbf{arXiv Summaries}: Sourced from OLC, this dataset includes summaries of research papers from arXiv, facilitating research in scientific literature summarization.
+
+\item \textbf{Wikipedia}: We included portions of Wikipedia from TxT360's subset. To limit potential PII issues and limit trivia that may not be educational, we filtered out articles about currently living persons, such as sports stars, or shorter articles, including those about sporting events, inspired by Phi-3 and 4's work. 
+
+
+\item \textbf{Megawika}: A large-scale, multilingual, and cross-lingual dataset containing 30 million Wikipedia passages with their cleaned web citations in 50 languages. We used the original Wikipedia documents, select translations, and .gov web pages in this corpus, cleaning the content, aligning multilingual pairs, and appending relevant .gov webpages cited by Wikipedia. This results in a structured and contextualized knowledge base.
+
+\item \textbf{VALID}: Developed by Ontocord.AI in collaboration with Grass and LAION, VALID includes approximately 720,000 Creative Commons-licensed YouTube videos. It combines: Video frames, Audio, Multilingual transcripts. This enables training on rich multimodal interactions, where models learn the interplay between vision, language, and sound. We use only the text portion of this dataset.
+
+\item \textbf{Youtube Commons}: A collection of over 2 million YouTube videos released under CC-BY, providing 45 billion words of multilingual conversational transcripts. This hopefully will teach models how humans actually talk—across contexts, languages, and cultures. We collapsed transcripts for the same video into a single example so that the multilingual translations are presented together. We also performed text cleanup to remove some grammar and spelling issues.
+\end{itemize}

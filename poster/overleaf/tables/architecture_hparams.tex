@@ -1,0 +1,23 @@
+\begin{table*}[htbp]
+\centering
+\caption{\textbf{open-sci-ref}~\citep{nezhurina2025opensciref001openreproduciblereference} model architecture and scales. We used tied embedding weights in all experiments.}
+\label{tab:opensciref_scales}
+
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{@{}l c c c c c c@{}}
+\toprule
+\textbf{\makecell[l]{Parameters (B) \\ (Non-Emb + Emb)}} &
+\textbf{Layers} &
+\textbf{Hidden} &
+\textbf{Heads} &
+\textbf{\makecell[l]{FFN \\ Hidden}} &
+\textbf{Memory} &
+\textbf{\makecell[l]{FLOPs}} \\
+\midrule
+$0.1 + 0.03 = 0.13$ & 22 & 512  & 8  & 2256 & $0.89\,\mathrm{GB}$  & $7.8\times10^{8}$ \\
+$0.35 + 0.05 = 0.40$ & 22 & 1024 & 16 & 3840 & $2.88\,\mathrm{GB}$ & $2.4\times10^{9}$ \\
+$1.21 + 0.10 = 1.31$ & 24 & 2048 & 32 & 5440 & $7.544\,\mathrm{GB}$ & $7.9\times10^{9}$ \\
+$1.61 + 0.10 = 1.71$ & 24 & 2048 & 32 & 8192 & $9.884\,\mathrm{GB}$ & $1.0\times10^{10}$ \\
+\bottomrule
+\end{tabular}
+\end{table*}

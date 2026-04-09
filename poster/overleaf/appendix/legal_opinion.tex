@@ -1,0 +1,52 @@
+
+\section{Our Position on Using Governmental and Other Works Under Fair Use and Related Ethical and Legal Basis}
+\label{app:govt_works}
+
+To contextualize our licensing tiers and clarify the rationale behind including certain higher-risk but legally supportable sources, we outline here the ethical and legal considerations underlying \MixtureVitae{}’s construction. Our goal is not to offer legal advice or definitive interpretations of copyright law, but rather to articulate the principles—fair use, permissive upstream licensing, government-works doctrine, and the EU text-and-data-mining (TDM)~\citep{eu_directive_tdm_2019,10.1093/grurint/ikac054} exception—that inform our “permissive-first, risk-mitigated” design philosophy. We provide this discussion so downstream users can understand how specific dataset subsets were evaluated and what residual risks remain despite our filtering and provenance-tracking efforts.
+
+\subsection{Fair Use of Government Works}
+In order to increase the diversity of our dataset, we included $\approx$11B tokens of governmental website data from US federal, US non‑federal, and non‑US government sources. While works created by the US federal government are generally not copyrightable, other governmental website content may neither be expressly in the public domain nor explicitly licensed. For those sources, we rely on fair use principles (\cite{uscopyright,lemley2017fair}) and the EU text and data mining exceptions (\cite{eu_directive_tdm_2019, 10.1093/grurint/ikac054}), which together mitigate the risk associated with using this subset.
+
+Our ethical and legal reasoning for using this government web content---sourced from Common Crawl–related datasets~\citep{commoncrawl} that respect \textit{robots.txt} opt‑out---is as follows:
+
+
+\begin{itemize}
+\item \textbf{Public Purpose Alignment}: The content created by governments is normally meant to be shared with the public, and by using the data for training we are assisting this purpose.
+
+\item \textbf{Purpose of Use}: From a legal perspective, the government works are being redistributed as part of an open source, no-fee dataset, used to create models are less likely to violate copyright. This purpose is clearly not to compete with the government’s own usage.
+
+\item \textbf{Effect on Potential Market}: Our use of government website content is unlikely to affect any potential market for that content, as governments typically do not exploit these materials commercially in ways that would compete with our dataset or downstream models. This factor favors a finding of fair use.
+
+\item \textbf{Nature of the Content}: The nature of the content is mostly public announcements, content of public interest, governmental functions or the like. Again, we believe there is strong public policy interest for fair use of this type of information.
+
+\item \textbf{Amount Used}: While we use all or almost all of the content of the government website, the amount of usage is not determinative of fair-use or not fair-use.
+
+\item \textbf{Federal vs. Non-Federal Works}: Lastly, US works created by the federal governments are generally not copyrightable. However, we recognize that this is not the case for other foreign governmental works, or non-federal works.
+\end{itemize}
+
+For these reasons, we believe using government website data presents relatively lower copyright risk. To further minimize risk---for example, the potential inclusion of third‑party copyrighted works embedded in government web pages---we apply keyword filters such as “All Rights Reserved” and “Copyright ©” to exclude pages that contain such terms.
+
+Recent court cases, as of the writing of this paper, include:
+\begin{itemize}
+    \item \textbf{Bartz v. Anthropic PBC}: district court ruling that use of purchased copies of books for AI training is fair use.
+    \item \textbf{Kadrey v. Meta Platforms, Inc.,}: district court ruling that training on authors’ books was transformative fair use.
+\end{itemize}
+ 
+These developments lend some support to the argument that AI training on web-text data—including our relatively small, public-facing government subset—can fall within fair use, though the case law is still evolving.
+
+\subsection{Other Tier‑2 Data With Opaque or Mixed Provenance}
+Similarly, our dataset includes data whose provenance is not entirely transparent even though the license on the upstream dataset appears permissive, such as \texttt{The Stack V1} and other Tier‑2 sources identified in Appendix~\ref{app:synth_prov}. In the case of \texttt{The Stack V1}, a line‑by‑line audit to remove copyrighted content has not been performed, and therefore some risk remains in its usage. Nonetheless, we rely on fair use to justify this usage because the data are used to train models, rather than to provide a substitutive or competing software product. For a more detailed discussion of \texttt{The Stack V1}, see Section~\ref{app:stack}.
+
+For other Tier‑2 data, some upstream generator models impose conditions on downstream use—such as the Llama license, which requires model users to adhere to certain limitations. We do not believe we are bound by terms that were not contractually passed through to us by our direct licensor, although this issue is subject to debate. We therefore classify this small portion ($\approx$4\%) of the dataset as \textbf{Tier 2(b)}.
+
+There are additional Tier‑2 data where the provenance is partially opaque. For example, a small portion of our P3 dataset, when converted into a few‑shot format, may pose higher risk than other Tier‑1 data. While the ultimate source datasets that constitute P3 are well‑known academic benchmarks, some of those component datasets do not provide explicit licenses. Nonetheless, we consider the resulting few‑shot datasets to be highly transformative and unlikely to compete with the underlying works: they are mixed and reformatted multiple times for the specific purpose of training classification and few‑shot models, rather than, for example, serving as standalone product reviews. We classify these higher‑risk works as \textbf{Tier 2(b)} and include them in our dataset with that caveat.
+
+\subsection{Reliance on EU Text and Data Mining Exceptions}
+We also rely, to some extent, on the EU text and data mining exception~\citep{eu_directive_tdm_2019} for our inclusion of web‑crawled data. This regime is complementary to US fair‑use doctrine, and we mention it here for completeness. In particular, we depend on Common Crawl’s practice of respecting \textit{robots.txt} at the time of crawling. We do not believe retroactive recrawling is legally necessary to determine whether a work was subsequently opted out, but we nonetheless commend efforts towards doing so, such as Apertus~\citep{apertus2025apertusdemocratizingopencompliant}.
+
+\subsection{Residual Copyright and Trademark Risks}
+The copyright risks in machine learning are complex. For example, copyrighted materials may appear as limited fair‑use quotations in Wikipedia articles~\footnote{\url{https://en.wikipedia.org/wiki/Wikipedia:Quotations##Copyrighted_material_and_fair_use}}. A model trained on such materials in the aggregate could, in principle, generate more substantial and potentially infringing text than the short quotations present in the dataset. Future work should address this risk, including (i) copyright evaluation audits of datasets, and (ii) model‑level mitigations that encourage limited direct quotation and discourage reproduction of substantial protected passages.
+
+As with other large, permissively licensed datasets, additional legal risks remain, including trademark risks. For instance, while training on a Wikipedia article about “Spiderman” may be relatively low risk (given its CC‑BY‑SA license and the educational, summarizing nature of the article), a model that subsequently generates new stories featuring the character name “Spiderman”—even if the plots themselves are not derived from existing human‑created stories—may still implicate trademark rights. Addressing those issues thoroughly is beyond the scope of this work and is left for future research.
+
+We do not and cannot guarantee that, even with rigorous provenance tracking and standard filtering, the dataset is free of legal risk. Nothing in this section constitutes legal advice. We recommend that anyone who uses our datasets consult their own legal counsel in their jurisdiction before deploying models trained on this data in commercial settings.

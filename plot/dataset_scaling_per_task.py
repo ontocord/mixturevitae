@@ -180,4 +180,4 @@ def main():
 if __name__ == '__main__':
     main()
     
-# python dataset_scaling_per_task.py --data-file results-parts_removal_ablations.csv --mapping-file log_dir_name_mapping-parts_removal_ablations.jsonl --n-tokens 100B --size 1.7 --output-name 100B_parts_removal_ablation-per_dataset
+# python dataset_scaling_per_task.py --data-file results-parts_removal_ablations.csv --mapping-file log_dir_name_mapping-parts_removal_ablations.jsonl --n-tokens 100B --size 1.7 --output-name 100B_parts_removal_ablation-

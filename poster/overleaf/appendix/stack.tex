@@ -1,0 +1,14 @@
+\section{Provenance and Rationale for The Stack v1 (OpenRAIL-M and terms of use)}
+\label{app:stack}
+
+Our inclusion of 53.2B tokens sourced from \textbf{The Stack v1} \citep{kocetkov2023the}, which we categorize by its governing dataset card terms of use and which subsequent model uses the \textbf{OpenRAIL-M} license, warrants this specific note on provenance. The data was included based on the following rationale:
+
+\begin{itemize}
+    \item \textbf{Source and Filtering Methodology:} The dataset originates from a large-scale scrape of GitHub. The BigCode project curated this data by applying a filter to include only those repositories that contained a clear permissive license file (e.g., MIT, Apache 2.0, BSD) at the root level.
+
+    \item \textbf{Acknowledged Heuristic:} This repository-level filtering is a \textit{heuristic} and not a file-level guarantee. As acknowledged by the dataset's creators, this process cannot perfectly resolve complex cases of multi-licensing within a single repository, such as the inclusion of non-permissively licensed vendor libraries or mixed-license assets alongside permissively-licensed code.
+
+    \item \textbf{Inclusion Justification:} Despite this caveat, The Stack v1 represents the largest-available public corpus curated with the \textit{explicit goal} of permissive filtering. Excluding it would make training a high-performance, open, and risk-mitigated code model nearly impossible. Its ``best-effort'' permissive curation philosophy directly aligns with our dataset's core principle of risk-mitigation.
+\end{itemize}
+
+Thus we include it in our dataset with the classification of Tier-2, as defined in Section~\ref{sec:license_tiers}.

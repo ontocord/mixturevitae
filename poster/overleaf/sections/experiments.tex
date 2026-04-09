@@ -1,0 +1,210 @@
+\section{Experiments}
+\label{sec:experiment_results}
+
+We empirically validate the efficacy of \MixtureVitae{} through a comprehensive set of evaluations. 
+We begin by outlining our controlled experimental framework, model architectures, and baseline selection in Section~\ref{sec:setup}. 
+We then present the primary scaling behavior and general benchmark performance in Section~\ref{sec:results}, followed by a focused evaluation on reasoning, mathematics, and coding tasks in Section~\ref{sec:instruct_results}. 
+To ensure the integrity of these findings, we detail our decontamination protocol and leakage analysis in Section~\ref{sec:exp_contam}. 
+Finally, we isolate the contributions of specific dataset components through ablation studies in Section~\ref{app:ablations}, highlighting the critical impact of instruction and reasoning data density.
+
+
+\subsection{Experimental Setup}
+\label{sec:setup}
+To empirically validate the quality of the \MixtureVitae{} pretraining dataset, we conduct a large-scale comparative study against a selection of prominent open pretraining datasets. We isolate the impact of the dataset on downstream performance using the \textbf{open-sci-ref} training procedure~\citep{nezhurina2025opensciref001openreproduciblereference}, which enables systematic control of factors affecting benchmark scores. As in \texttt{open-sci-ref}, we fix the model architecture (Table ~\ref{tab:opensciref_scales}, sizes: 0.13B, 0.4B, 1.3B, 1.7B) and training hyperparameters (Table~\ref{tab:training_schedules}), varying only the dataset. This design ensures that any performance difference can be attributed solely to the dataset. 
+
+Also, following the numbers given in \texttt{open-sci-ref}, we train each model on two token budgets: 50B and 300B, to analyze scaling effects. Conducting separate training runs on each budget, rather than using intermediate checkpoints, thus ensuring a consistent data distribution and allowing for proper optimization of learning rate schedules for each specific token budget \citep{hoffmann2022}. This follows standard practice: data mixtures effective at small token budgets may not generalize to larger ones \citep{albalak2023efficientonlinedatamixing}. 
+
+% that often distorts evaluation results
+To guard against test‑set leakage, we also perform a large‑scale 13‑gram decontamination analysis and re‑evaluation with decontaminated dataset; Section~\ref{sec:exp_contam} and Appendix~\ref{app:contamination} detail this procedure.
+
+%The 50B token subset of \MixtureVitae{} is uniformly sampled from the original dataset split to analyze scaling effects with respect to token count (see Appendix~\ref{app:50b_exp}). The 300B token budget is achieved by uniform repeated sampling.  
+
+% Tables~\ref{tab:opensciref_scales} and ~\ref{tab:training_schedules} summarize the model architecture and hyperparameter configurations used. 
+%We used the hyperparameters prescribed in \textbf{open-sci-ref}, which have been validated to reproduce established baselines on C4~\citep{raffel2020exploring} and FineWeb-Edu~\citep{lozhkov2024fineweb-edu}, using open-source models at the 1.7B scale. 
+
+Within this controlled evaluation framework, we compare \MixtureVitae{} with the set of public baselines evaluated in \texttt{open-sci-ref}, with the addition of a representative selection of permissively licensed datasets. As detailed in Table~\ref{tab:dataset_comparison}, the comparison set includes two groups: \textbf{(i) Non-Permissive/Mixed-License Baselines.} C4~\citep{raffel2020exploring}, The Pile~\citep{gao2020pile}, SlimPajama~\citep{shen2024slimpajamadcunderstandingdatacombinations}, FineWeb-Edu~\citep{penedo2024}, Nemotron-CC-HQ~\citep{su2025nemotroncc}, DCLM-baseline~\citep{li2024datacomplm}, HPLT Monolingual Datasets v2.0~\citep{burchell2025}; \textbf{ (ii) Permissive Baselines.} CommonCorpus and its English subset~\citep{langlais2025commoncorpuslargestcollection}, as well as Comma-0.1~\citep{kandpal2025commonpilev018tb}.
+
+% \begin{itemize}
+%     \item \textbf{Non-Permissive/Mixed-License Baselines.} C4~\citep{raffel2020exploring}, The Pile~\citep{gao2020pile}, SlimPajama~\citep{shen2024slimpajamadcunderstandingdatacombinations}, FineWeb-Edu~\citep{penedo2024}, Nemotron-CC-HQ~\citep{su2025nemotroncc}, DCLM-baseline~\citep{li2024datacomplm}, HPLT Monolingual Datasets v2.0~\citep{burchell2025};
+%     \item \textbf{Permissive Baselines.} CommonCorpus and its English subset~\citep{langlais2025commoncorpuslargestcollection}, as well as Comma-0.1~\citep{kandpal2025commonpilev018tb}. 
+% \end{itemize}
+
+%By evaluating our transparent, risk-mitigated dataset, \MixtureVitae{}, against both categories, we demonstrate its performance and viability, showing that reliance on indiscriminately scraped, high-risk copyrighted data is not a prerequisite for training capable LLMs.
+% Among these, The Pile, SlimPajama, FineWeb-Edu, DCLM, and HPLT v2.0 do not provide permissive licensing and may contain copyright violations, whereas CommonCorpus and Comma are permissively licensed. 
+
+% A detailed licensing comparison with \MixtureVitae{} is provided in Table~\ref{tab:dataset_comparison}.
+
+%To directly compare performance as a function of training compute, we trained models of multiple sizes on fixed token budgets, providing a clear measure of data quality and efficiency per token. This approach isolates the impact of the dataset itself, controlling for the varying sizes of the original source corpora. Specifically, models are periodically evaluated during training at fixed token intervals. Reference dense transformer models with 130M, 400M, 1.3B, and 1.7B parameters are trained using Megatron-LM~\citep{shoeybi2020megatronlmtrainingmultibillionparameter}. Each model is trained on two token budgets: a 50B token subset and a 300B token set--to analyze scalling effects. The 50B token subset is uniformly sampled from the original dataset split to analyze scaling effects with respect to token size. 
+
+All datasets are tokenized using the GPT-NeoX-20B tokenizer~\citep{black2022gptneox}, resulting in a vocabulary size of 50,304. The models are trained using Megatron-LM~\citep{shoeybi2020megatronlmtrainingmultibillionparameter}, and the evaluations are performed using LM Evaluation Harness~\citep{eval-harness}. Model performance is evaluated on recognized downstream task benchmarks: MMLU~\citep{hendrycks2021mmlu}, COPA~\citep{copa}, LAMBADA~\citep{paperno2016lambada}, OpenBookQA~\citep{mihaylov2018openbookqa}, Winogrande~\citep{sakaguchi2020winogrande}, ARC (Challenge and Easy)~\citep{clark2018arc}, BoolQ~\citep{clark2019boolq}, HellaSwag~\citep{zellers2019hellaswag}, Commonsense-QA~\citep{talmor2019commonsenseqa} and PIQA~\citep{bisk2019piqareasoningphysicalcommonsense}. 
+
+% To ensure that the comparison is strictly limited to the data, all other training variables—including hyperparameters, learning rate schedule, and global batch size—are held constant across all training runs\cmt[VM]{need details}. Each model is trained for a total of 
+% 300 billion tokens, as shown in the figure \cmt[VM]{link to figure}. 
+
+% The baseline datasets used for comparison are: C4 \citep{raffel2020exploring}, The Pile \citep{gao2020pile}, SlimPajama \citep{shen2024slimpajamadcunderstandingdatacombinations}, FineWeb-Edu \citep{lozhkov2024fineweb-edu}, CommonCorpus and its English subset \citep{commoncorpus2023}, and several other open datasets including Nemotron-cc-hq\citep{su2025nemotroncctransformingcommoncrawl}, DataComp-LM\citep{dclm2024}, HPLT Monolingual Datasets v2.0 \citep{hplt2024}, and Comma\citep{langlais2025commoncorpuslargestcollection}. This experimental design allows us to directly plot the performance of each dataset as a function of training compute, providing a clear comparison of data quality and efficiency.
+
+\subsection{Experiment Results}
+\label{sec:results}
+\begin{figure}[t!]
+    \centering
+
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/300B_results_all_plot_clustered_avg.pdf}
+          \vspace*{-0.5cm}
+          \caption{Average performance on all 11 evaluated tasks.}
+        \label{fig:average_all_performance}
+    \end{subfigure}%
+    \hfill % Add horizontal spacing
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/300B_results_mmlu_plot_clustered_avg.pdf}
+          \vspace*{-0.5cm}
+          \caption{Performance on MMLU.}
+        \label{fig:average_mmlu_performance}
+    \end{subfigure}%
+
+    \caption{Performance comparison of pretraining datasets for a 1.7B-parameter model trained up to a 300B token budget, showing downstream accuracy as a function of the number of training tokens.
+        %\cmt[YW]{This starting with "The subplots" is probably redundant given the subplot captions. DS: I agree, I commented it out}The subplots are: (a) Average performance on all evaluated tasks, (b) Performance on MMLU, (c) Average performance on Question Answering tasks, and (d) Average performance on Common Sense Knowledge tasks. 
+        % Performance analysis of 1.7B parameter models, demonstrating the explicit trade-off from our curation strategy. 
+        % \textbf{(a)} On the Reasoning benchmark cluster, \MixtureVitae{}'s targeted inclusion of synthetic data results in a distinct performance spike, closing the gap with top-tier non-permissive datasets. 
+        % \textbf{(b)} Conversely, on the Narrative cluster, our dataset is competitive but trails generalist web scrapes (like FineWeb-Edu) and other permissive baselines (like Comma-0.1). This pair of results confirms our dataset's capabilities are a direct result of deliberate curation, not indiscriminate scraping.
+    }
+
+    % --- Main Figure Caption ---
+    %\caption{Comparing average performance across 10 evaluation benchmarks (Copa[0], Openbookqa[0], Lambada[0], Winogrande[0], MMLU[5], Piqa[10], Arc-challenge[10], Arc-easy[10], Hellaswag[10], Boolq[10], [n] standing for few-shot number) for 8 different datasets trained using 300B tokens on different model scales. Dataset ranking is visible and consistent across model scales, with differences becoming more pronounced at larger model scales.}
+\label{fig:300b_performance}
+\end{figure}
+
+\begin{table}[!th]
+    \centering
+    \footnotesize
+\caption{Performance comparison of 1.7B-parameter models trained on different pretraining datasets with a 300B token budget.
+\textit{Italic} denotes the best result among permissive-only datasets, while \textbf{bold} indicates the best result overall, including mixed-license datasets.
+\MixtureVitae{} outperforms other permissive datasets across most benchmarks. On reasoning related MMLU, BoolQ, and CommonSense-QA, it also outperforms strong non-permissive baselines.}
+\label{tab:lang_results}
+    \footnotesize
+\begin{tabular}{lrrrrr}
+\toprule
+Benchmark & \makecell{\MixtureVitae{}\\\scriptsize (permissive)} &
+\makecell{Comma-0.1\\\scriptsize (permissive)} &
+\makecell{CommonCorpus\\\scriptsize (permissive)} &
+\makecell{FineWeb-Edu\\\scriptsize (mixed-license)} &
+\makecell{DCLM\\\scriptsize (mixed-license)}\\
+\midrule
+COPA  & \textit{0.73} & 0.71 & 0.71 & 0.76 & \textbf{0.81} \\
+Lambada  & 0.48 & \textit{0.54} & 0.49 & 0.52 & \textbf{0.65} \\
+OpenBookQA  & \textit{0.35} & 0.33 & 0.31 & \textbf{0.42} & 0.39 \\
+Winogrande & 0.58 & \textit{0.60} & 0.56 & 0.61 & \textbf{0.62} \\
+MMLU & \textbf{\textit{0.38}} & 0.27 & 0.25 & 0.26 & 0.25 \\
+ARC-Challenge  & \textit{0.40} & 0.36 & 0.32 & \textbf{0.44} & 0.40 \\
+ARC-Easy & \textit{0.71} & 0.63 & 0.61 & \textbf{0.75} & 0.73 \\
+BoolQ  & \textbf{\textit{0.75}} & 0.62 & 0.62 & 0.67 & 0.69 \\
+CommonSense-QA  & \textbf{\textit{0.49}} & 0.21 & 0.19 & 0.19 & 0.20 \\
+HellaSwag  & \textit{0.54} & 0.53 & 0.45 & 0.63 & \textbf{0.67} \\
+PIQA  & 0.70 & \textit{0.71} & 0.66 & \textbf{0.76} & \textbf{0.76} \\
+\midrule
+Average & \textbf{\textit{0.56}} & 0.50 & 0.47 & \textbf{0.55} & \textbf{0.56} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Overall average performance.} At a 300B-token budget, \MixtureVitae{} shows strong performance when compared to the reference permissive datasets and is almost comparable to the non-permissive datasets (Figure~\ref{fig:300b_performance}, Tab.~\ref{tab:lang_results}). \MixtureVitae{} outperforms all permissive dataset baselines by a significant margin, with gaps widening considerably for larger model sizes, in terms of average performance across all 10 tasks (see Figure~\ref{fig:average_all_performance}, Tab.~\ref{tab:lang_results}). Non-permissive datasets, particularly Nemotron-CC-HQ and DCLM, still achieve the highest overall performance. Approaching the 300B token budget, \MixtureVitae{} catches up to FineWeb-Edu and DCLM. More importantly, while the top-performing models are still trained on non-permissive datasets like Nemotron-CC-HQ and DCLM, our results demonstrate that this performance gap is no longer an inevitability. \MixtureVitae{} proves that a dataset built on a fully permissive, risk-mitigated foundation can achieve highly competitive results—significantly outperforming all other permissive baselines and landing within a small, practical margin of top-tier, legally-ambiguous corpora. This finding directly challenges the prevailing assumption that reliance on high-risk, indiscriminately scraped copyrighted data is a prerequisite for training capable LLMs. \MixtureVitae{} performs particularly well relative to others on reasoning related tasks like \textbf{MMLU} (Figure~\ref{fig:average_mmlu_performance}, Tab.~\ref{tab:lang_results}), where most baselines are near random chance. Among all the baselines, only Nemotron-CC-HQ catches up to \MixtureVitae{} at around 260B and overtakes it past that point. Our findings also hold at the 50B token budget scale (App. Sec.~\ref{app:50b_exp}).
+
+% At a 300B-token budget, \MixtureVitae{} shows strong scaling behavior when compared to the reference permissive dataset and is almost comparable to the non-permissive datasets (Figure~\ref{fig:300b_performance}).
+
+% \paragraph{Overall average performance.} \MixtureVitae{} outperforms all permissive dataset baselines by a significant margin, with gaps widening considerably for larger model sizes, in terms of average performance across all 10 tasks (see Figure~\ref{fig:average_all_performance}). Non-permissive datasets, particularly Nemotron-CC-HQ and DCLM, still achieve the highest overall performance. Approaching the 300B token budget, \MixtureVitae{} catches up to FineWeb-Edu and DCLM. More importantly, while the top-performing models are still trained on non-permissive datasets like Nemotron-CC-HQ and DCLM, our results demonstrate that this performance gap is no longer an inevitability. \MixtureVitae{} proves that a dataset built on a fully permissive, risk-mitigated foundation can achieve highly competitive results—significantly outperforming all other permissive baselines and landing within a small, practical margin of top-tier, legally-ambiguous corpora. This finding directly challenges the prevailing assumption that reliance on high-risk, indiscriminately scraped copyrighted data is a prerequisite for training capable LLMs. Our findings also hold at the 50B token budget scale (Appendix~\ref{app:50b_exp}).
+
+% \paragraph{Performance on MMLU.}As demonstrated in figure~\ref{fig:average_mmlu_performance}, \MixtureVitae{} performs particularly well relative to others on \textbf{MMLU}, where most baselines fall within near random chance throughout. Among all the baselines, only Nemotron-CC-HQ catches up to \MixtureVitae{} at around 260B and overtakes it past that point. 
+
+
+
+% Jenia: we dont know this. It might be as well instruction format following, not reasoning itself, that other models are lacking.
+% This advantage over most baselines suggests that the inclusion of curated academic and encyclopedic sources in \MixtureVitae{} was particularly effective for instilling knowledge and reasoning into models trained on it.
+
+\textbf{Performance on single tasks.} We show performance on each single task in Tab.~\ref{tab:lang_results} and in the App. Sec.~\ref{app:additional_exp_tasks_300B} (App. Fig.~\ref{fig:per_dataset_performance}). \MixtureVitae{} outperforms other permissive datasets on MMLU, Arc Challenge, Arc Easy and BoolQ, while closely matching DCLM and FineWeb-Edu. On PIQA, HellaSwag, Winogrande, OpenBookQA, \MixtureVitae{} is on par with Comma-0.1, while both are behind non-permissive datasets. Lambada is the only task where \MixtureVitae{} falls behind Comma-0.1. We thus observe \MixtureVitae{} to be particularly strong on reasoning-related tasks.
+
+% \paragraph{Performance on single tasks.} We show performance on each task separately in the Sec. \ref{app:additional_exp_tasks_300B} (Fig. \ref{fig:per_dataset_performance}). \MixtureVitae{} outperforms other permissive datasets on MMLU, Arc Challenge, Arc Easy and BoolQ, while closely matching DCLM and FineWeb-Edu. On PIQA, HellaSwag, Winogrande, OpenBookQA, \MixtureVitae{} is on par with Comma-0.1, while both are behind non-permissive datasets. Lambada is the only task where \MixtureVitae{} falls behind Comma-0.1. We thus observe \MixtureVitae{} to be particularly strong on reasoning-related tasks.
+
+% \paragraph{Performance on question answering.}\MixtureVitae{} shows strong performance on Question Answering (QA) tasks (Figure~\ref{fig:average_qna_performance}). Not only does \MixtureVitae{} show a considerable advantage over permissive datasets such as Comma-0.1 and CommonCorpus, but it performs within the top cluster alongside the best non-permissive datasets, Nematron-CC-HQ and FineWeb-Edu. This strong performance is likely attributable to the significant investment in the 'Reasoning \& Instruction' category, which (at 55.9B tokens) is the second-largest component of the dataset. %\cmt[YW]{Here's an opportunity to tie this performance difference back to our design choices; should say more on that.}
+
+% \paragraph{Performance on common sense.} While \MixtureVitae{} still significantly outperforms the CommonCrawl permissive baseline and matches Comma, it lags behind the non-permissive datasets (Figure~\ref{fig:average_common_sense_performance}). \MixtureVitae{}'s scaling curve on these tasks (e.g., HellaSwag, Winogrande) is noticeably flatter (Figure~\ref{fig:per_dataset_performance} in Appendix~\ref{tab:training_schedules}), indicating that the dataset's composition, which is heavy on instruction and reasoning data, is less optimized for intuitive, implicit, everyday-scenario reasoning that does not readily benefit from more knowledge, such as for MMLU. This may suggest a potential trade-off between maximizing performance on factual domains versus common-sense reasoning.
+
+
+% \cmt[Huu]{1. throughout training, all benchmarks consistently improved, despite the increase in epochs, and the majority of the benchmarks showed improvements over phi-3. However, knowledge-related benchmarks, like 1-shot triviaqa (TQA), show a large gap where synthetic models are subpar. These observations led us to rethink the role of web data in our data mixture."
+% 2. 
+    
+%     "Table 4 summarizes the results for the hand-picked ablations, as compared with the data mixture that was used for the final training run. A uniform allocation of tokens among the three categories is suboptimal due to the higher quality of synthetic data and the only benchmark that shows a clear benefit from web data is TQA. While the synthetic-heavy variations on rows 2 and 3 of the table are marginally better than the chosen final data mixture, we decided to integrate the targeted and knowledge-heavy f iltered web data sources to improve knowledge benchmarks (see Section 3.1) to balance all model"}
+
+
+\subsection{Results on Problem Solving and Instruction-Based Downstream Tasks}
+\label{sec:instruct_results}
+
+To further demonstrate the performance of the \MixtureVitae{} dataset, we evaluate the model on a set of math, code, and instruction benchmarks: GSM8k~\citep{cobbe2021training}, MBPP~\citep{austin2021programsynthesislargelanguagen}, IF-Eval~\citep{zhou2023instruction}.  Our evaluation uses the final 1.7B model checkpoints after training for 300B tokens using the \texttt{open-sci-ref} protocol (exact evaluation setup in Table~\ref{tab:reasoning-eval-settings}).
+
+Unlike traditional web-only baselines (e.g., C4, FineWeb, DCLM), \MixtureVitae{} utilizes a \textit{reasoning and instruction-heavy} pretraining mixture. Compared against base models with same architecture and matched training compute, this front-loading strategy shows capabilities typically associated with post-training. This pretraining composition leads to a more token-efficient and simple path to reasoning competence already after single base model pre-training stage, matching or outperforming conventional multi-stage extensive pre- and post-training procedures.
+
+% GSM8k~\citep{cobbe2021training}, MATH, HumanEval, MBPP~\citep{chen2021evaluating}, IF-Eval~\citep{zhou2023instructionfollowing})
+
+%  the GSM8k math benchmark~\citep{cobbe2021training}, the IfEval instruction following benchmark~\citep{zhou2023instructionfollowing} and the MBPP coding benchmark~\citep{chen2021evaluating}.
+
+\begin{table}[!htb]
+    \centering
+%\caption{Performance on math, code and instruct tasks for 1.7B base models, with varying pretraining token budgets and datasets. \MixtureVitae{} has significant lead in math and code, demonstrating the effectiveness of its targeted "Reasoning \& Instruction" data components.}
+\caption{\textbf{Performance on math, code, and instruction-following tasks for 1.7B models.}
+We compare \MixtureVitae{}—trained on a reasoning- and instruction-heavy, permissive-first
+mixture—against standard \texttt{open-sci-ref} baselines trained on predominantly web-based
+corpora. \MixtureVitae{} shows a substantial lead in math and code tasks. Notably, the
+1.7B \MixtureVitae{} base model exceeds \textbf{SmolLM2-1.7B-Instruct} on GSM8K,
+HumanEval, and MBPP despite training on 300B rather than $\approx$11T tokens.}
+
+\label{tab:instruct_results}
+    \footnotesize
+\begin{tabular}{llrrrrr}
+\toprule
+Training Dataset & Tokens & IF-Eval & GSM8K & HumanEval & MBPP & Average \\
+\midrule
+\multicolumn{7}{@{}l}{\textit{Models Trained with \texttt{open-sci-ref}} for 300B Tokens} \\
+\MixtureVitae{} & 300B & 0.19 & \textbf{0.53} & \textbf{0.32} & \textbf{0.38} & \textbf{0.36} \\
+Comma-0.1 & 300B & 0.19 & 0.06 & 0.13 & 0.22 & 0.15 \\
+CommonCorpus & 300B & 0.13 & 0.02 & 0.05 & 0.05 & 0.06 \\
+C4 & 300B & 0.20 & 0.02 & 0.00 & 0.00 & 0.06 \\
+SlimPajama & 300B & 0.14 & 0.02 & 0.05 & 0.00 & 0.05 \\
+HPLT-2.0 & 300B & 0.17 & 0.02 & 0.00 & 0.00 & 0.05 \\
+DCLM & 300B & 0.13 & 0.02 & 0.01 & 0.01 & 0.04 \\
+Nemotron-CC-HQ & 300B & 0.09 & 0.03 & 0.02 & 0.00 & 0.03 \\
+\multicolumn{7}{@{}l}{\textit{Models Trained with \texttt{open-sci-ref}} for 1T Tokens} \\
+\midrule
+FineWeb-Edu & 1T & 0.20 & 0.03 & 0.00 & 0.00 & 0.06 \\
+Nemotron-CC-HQ & 1T & 0.13 & 0.03 & 0.01 & 0.04 & 0.05 \\
+DCLM & 1T & 0.15 & 0.03 & 0.00 & 0.01 & 0.05 \\
+\multicolumn{7}{@{}l}{\textit{Other Models}} \\
+\midrule
+SmolLM2-1.7B & 11T & 0.18 & 0.31 & 0.01 & 0.35 & 0.21 \\
+SmolLM2-1.7B-Instruct & 11T & \textbf{0.28} & 0.37 & 0.28 & 0.37 & 0.33 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% trained for 300B tokens
+% on math (GSM8K), instruction-following (IfEval), and coding (MBPP)
+
+
+
+The results (Table~\ref{tab:instruct_results}) show a dramatic difference on math (GSM8K) and coding (HumanEval, MBPP). \MixtureVitae{} achieves scores of \textbf{0.53}, \textbf{0.32}, and \textbf{0.38}, respectively. This performance is considerably stronger than any other dataset, all of which remain near random performance on GSM8K (0.02-0.06) and cap at 0.13 on HumanEval and 0.22 on MBPP. Most notably, our base model outperforms the post-trained SmolLM2-1.7B-Instruct \citep{lozhkovsmollm2} model on GSM8K, HumanEval, and MBPP --- despite the latter being trained on $\approx$11T tokens (over $36\times$ our budget). See App. Sec.~\ref{app:ablations} for ablation studies confirming reasoning and instruction subset being largely responsible for the strong performance on math/code tasks (App. Fig. ~\ref{fig:ablate_all})). 
+
+% Removing this subset (“w/o Instructions” in Figure~\ref{fig:ablate_all})
+
+% \MixtureVitae{}’s performance is enhanced by the large proportion of reasoning and instruction data, as demonstrated in the ablation study in Section~\ref{app:ablations}. Removing this subset (“w/o Instructions” in Figure~\ref{fig:ablate_all})
+
+%Notably, our base model matches or exceeds the performance of SmolLM2-1.7B-Instruct \citep{allal2025smollm2}, a strong \textit{instruction-tuned} model in the 1.7B size class. The latter, despite being trained on roughly 11T tokens and undergoing a multi-stage post-training pipeline, achieves 37\% on GSM8K and 37\% on MBPP---scores comparable to \MixtureVitae{}'s base performance after only 300B tokens.  %On the general instruction-following task, IF-Eval, the results are more comparable. C4 achieves the highest score (0.20), with \MixtureVitae{} (0.19) and HPLT-2.0 (0.17) performing similarly. 
+
+%To validate these high scores, we perform an extensive decontamination analysis in Appendix \ref{app:decontam_gsm8k}. Our performance is maintained when re-evaluating on "clean" test sets with all overlapping examples removed (Table~\ref{tab:decontam-results-validation}), confirming our results are not an artifact of test set leakage.
+
+
+\subsection{Test leakage and decontamination}
+\label{sec:exp_contam}
+To rule out test-set leakage as an alternative explanation for these gains, we perform a 13-gram exact-match decontamination sweep between \MixtureVitae{} and all benchmarks
+(Appendix~\ref{app:decontam_gsm8k}). Document-level overlap is negligible for most tasks (e.g., at or below
+$0.0003\%$ for ARC, HellaSwag, LAMBADA, OpenBookQA, and PIQA; see Table~\ref{tab:global_contam_summary}); contamination rates are modest for MMLU and BoolQ; for code benchmarks such as HumanEval and MBPP, contamination rates are higher but still small. We then (i) re-evaluate all models on decontaminated test sets with all overlapping items removed and (ii) retrain a 1.7B model, removing the shards responsible for the majority of the contamination signal. In both cases, \MixtureVitae{}’s performance
+remains essentially unchanged (Table~\ref{tab:decontam-results-validation} and Figure~\ref{fig:ablate_app}), confirming that our results are not an artifact of test-set leakage.

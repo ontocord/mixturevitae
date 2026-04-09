@@ -1,0 +1,58 @@
+% \begin{table*}[t]
+% \centering
+% \renewcommand{\arraystretch}{1.5} % Adds a bit of vertical padding for readability
+% \begin{tabular}{@{}l l l l l@{}}
+% \toprule
+% \textbf{Dataset} & \textbf{\makecell[l]{Size \\ (Tokens)}} & \textbf{\makecell[l]{Primary \\ Data Types}} & \textbf{\makecell[l]{Licensing \\ Philosophy}} & \textbf{\makecell[l]{Synthetic Data \\ Policy}} \\
+% \midrule
+% \textbf{Mixture Vitae} & \textbf{$\approx 300B$} & \textbf{\makecell[l]{Web, Curated, \\ Books, Synthetic}} & \textbf{\makecell[l]{Strictly Permissive \\ + Risk-Mitigated}} & \textbf{\makecell[l]{Included}} \\
+
+% \makecell[l]{Common Corpus \\ \citep{commoncorpus2023}} & $\approx2T$ & \makecell[l]{Books, Science, \\ Legal, Web} & \makecell[l]{Strictly Permissive; \\ Provenance-focused} & Excluded \\
+
+% \makecell[l]{The Common Pile \\ \citep{commonpile2023}} & $\approx 5T$ (est.) & \makecell[l]{Web, Books, Code, \\ Academic} & \makecell[l]{Strictly Permissive \\ (OKD)} & Excluded \\
+
+% \makecell[l]{Dolma \\ \citep{soldaini2024dolma}} & $\approx 3T$ & \makecell[l]{Web, Academic, Code, \\ Books} & \makecell[l]{Permissive (ODC-BY); \\ Open Tooling} & Excluded \\
+
+% \makecell[l]{KL3M Data Project \\ \citep{kl3m2024}} & $>2.5T$ & \makecell[l]{Legal, Financial, \\ Government} & \makecell[l]{Proprietary; Certified \\ "Fairly Trained"} & Excluded \\
+
+% \makecell[l]{The Stack \\ \citep{kocetkov2022stack}} & $\approx 2.2T$ (est.) & Source Code & Strictly Permissive & Excluded \\
+% \bottomrule
+% \end{tabular}
+% \caption{Comparison of large-scale pretraining datasets. Mixture Vitae is unique in its combination of a risk-mitigated licensing philosophy and the inclusion of synthetic data to enhance pretraining performance.\cmt[VM]{Which other datasets to include?}}
+% \label{tab:dataset_comparison}
+% \end{table*}
+
+
+\begin{table*}[htbp]
+\center
+\caption{Comparison of large-scale pretraining datasets, grouped by their licensing philosophy to provide context for our performance results. \MixtureVitae{} is unique in its combination of a risk-mitigated licensing approach and the inclusion of a large subset of reasoning, coding and instruction synthetic data.} 
+\label{tab:dataset_comparison}
+\footnotesize
+\renewcommand{\arraystretch}{1.5} % Adds vertical padding
+\scalebox{0.88}{
+\begin{tabular}{@{}l l l l@{}}
+\toprule
+\textbf{Dataset} & \textbf{\makecell[l]{Size \\ (Tokens)}} & \textbf{\makecell[l]{Primary \\ Data Types}} & \textbf{\makecell[l]{Licensing \\ Philosophy}} \\
+\midrule
+\multicolumn{4}{@{}l}{\textit{Non-Permissive / Mixed-License Baselines}} \\
+\quad Nemotron-CC-HQ \citep{su2025nemotroncc} & $\approx$ 1.1T & Web, Synthetic & Unspecified \\
+\quad DCLM-baseline \citep{li2024datacomplm} & $\approx$ 3.8T & Web, Code, Academic & Mixed / Unspecified \\
+\quad FineWeb-Edu \citep{penedo2024} & $\approx$ 1.3T & Web (Educational) & Unspecified \\
+\quad The Pile \citep{gao2020pile} & $\approx$ 183.28B & Web, Books, Code & Mixed / Unspecified \\
+\quad SlimPajama \citep{shen2024slimpajamadcunderstandingdatacombinations} & $\approx$ 627B & Web, Books, Code & Mixed / Unspecified \\
+\quad C4 \citep{raffel2020exploring} & $\approx$ 156B & Web & ODC-BY \\
+\quad HPLT-2.0 (eng.) \citep{burchell2025} & $\approx$ 2.86T & Web, Books, News & Mixed / Unspecified \\
+\midrule
+\multicolumn{4}{@{}l}{\textit{Permissive Baselines}} \\
+\quad CommonCorpus \citep{langlais2025commoncorpuslargestcollection} & $\approx$ 2T & Web, Curated & Strictly Permissive \\
+\quad Comma-0.1 \citep{kandpal2025commonpilev018tb} & $\approx$ 1T & Web, Curated & Strictly Permissive \\
+\quad KL3M \citep{bommarito2025kl3mdataprojectcopyrightclean} & $\approx$ 580B & Web, Curated & Strictly Permissive \\
+\quad OLC \citep{min2024silo} & $\approx$ 228B & Web, Curated & Strictly Permissive \\
+\midrule
+\multicolumn{4}{@{}l}{\textit{Our Contribution}} \\
+\quad \MixtureVitae{} & \textbf{$\approx$ \DatasetSize{}B} & \textbf{\makecell[l]{Web, Curated, \\  Synthetic}} & \textbf{\makecell[l]{Permissive-First, \\ Risk-Mitigated}} \\
+\bottomrule
+\end{tabular}
+}
+
+\end{table*}

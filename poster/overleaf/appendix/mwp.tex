@@ -1,0 +1,28 @@
+\section{Synthetic Math Data Generation}
+\label{app:mwp}
+The synthetic math dataset was programmatically generated to produce a diverse range of mathematical problems and their solutions. The generation process covers a wide array of mathematical domains, including fundamental arithmetic operations, multi-term fractional expressions, and the step-by-step solution of algebraic linear equations. A key component of the dataset consists of word problems, where numerical challenges are embedded in narrative scenarios.
+
+A significant feature of this generation pipeline is the creation of detailed, step-by-step solutions formatted as a chain-of-thought. For many problem categories, the scripts produce a human-readable explanation of the entire solution process. This is achieved by using a variety of randomized natural language templates to describe each logical step, such as carrying a digit in addition or isolating a variable in an equation.
+
+Following the initial generation, a final post-processing step is applied to format the dataset for model training. This stage programmatically identifies data entries containing human-like, explanatory text by searching for common instructional words. For these selected entries, a descriptive header (e.g., "Here are examples of addition, division exercises") is dynamically generated. The content and phrasing of this header are randomized and based on the mathematical operations present within the text, adding significant linguistic diversity.
+
+%We believe that this data subset improves basic highschool math evaluations, but the question remains if the model can generalize beyond this basic math. As discussed in [AIW], training on similar formats for a problem may permit the model to generalize to unseen problems of the same type, but the model may not be robust to variations or extensions on the problem type.
+
+For example, in the generated math problem below, a model may be able to generalize to new numbers, but if the problem were to add three students instead of two, the model may not be robust enough to generalize. We leave this analysis for future work.
+
+\begin{verbatim}
+
+The age difference between Sarah and Asaf's age is half the 
+total number of pencils Sarah has. The sum of their ages is 
+132, and Sarah is 27 years old. If Asaf has 60 more pencils than 
+Sarah, calculate the total number of pencils they have together.
+Solution: If the sum of their ages is 132, and Sarah is 27 years 
+old, Asaf is 105 years old.
+The age difference between Sarah 
+and Asaf's age is 105-27 = 78.
+Since the age difference between Sarah and Asaf's age is half 
+the total number of pencils Sarah has, Sarah has 2*78 = 156 pencils.
+If Asaf has 60 more pencils than Sarah, Asaf has 156+60= 216 pencils.
+Together, they have 156 + 216 = 372 pencils.
+\end{verbatim}
+

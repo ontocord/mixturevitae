@@ -1,0 +1,32 @@
+\section{SNAC Audio Processing Pipeline Implementation}
+\label{app:snac_pipeline}
+To enable large-scale audio tokenization for multimodal training, we used an optimized SNAC processing pipeline that addresses memory constraints and variable-length audio challenges through adaptive bucketing and batch processing.
+
+\subsection{Technical Implementation}
+Our pipeline groups audio files into duration-based buckets ($\leq$15s, 15-45s, $>$45s) with corresponding target lengths (10s, 30s, 60s). Within each bucket, audio sequences undergo truncation or zero-padding to achieve uniform dimensions, enabling efficient GPU batch processing while preventing out-of-memory errors.
+
+The output maintains temporal structure through 7-token groupings corresponding to SNAC's internal resolution:
+
+\begin{verbatim}
+{
+  "id": "videoID_chunkIDX",
+  "text": "corresponding transcript text",
+  "snac_tokens": [
+    [128266, 128267, 169362, 171758, 210154, 250239, 290518],
+    [128268, 128269, 169363, 171759, 210155, 250240, 290519],
+    [...]
+  ],
+  "group_duration_sec": 0.018375
+}
+\end{verbatim}
+
+This structured format preserves precise temporal alignment (0.018375s per group from hop\_length=441 at 24kHz) essential for downstream speech synthesis tasks.
+
+\subsection{Performance Results}
+The implementation achieved:
+\begin{itemize}
+\item Memory-efficient processing through adaptive bucketing
+\item Scalable batch processing leveraging GPU parallelization  
+\item Curently used for processing of large-scale datasets (tested on ontocord/VALID)
+\item Maintained high-fidelity token representations with temporal precision
+\end{itemize}

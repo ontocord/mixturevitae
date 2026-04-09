@@ -1,0 +1,16 @@
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|c|l|}
+\hline
+\textbf{Task} & \textbf{Shots} & \textbf{Metrics} \\
+\hline
+hendrycks\_math & 4 & exact\_match, none \\
+gsm8k\_cot & 4 & exact\_match, flexible-extract \\
+gpqa\_main\_cot\_n\_shot & 4 & exact\_match, flexible-extract \\
+ifeval & -- & prompt\_level\_strict\_acc, none \\
+gpqa\_diamond\_cot\_n\_shot & 4 & exact\_match, flexible-extract \\
+\hline
+\end{tabular}
+\caption{Evaluation settings for selected tasks.}
+\label{tab:eval-settings}
+\end{table}

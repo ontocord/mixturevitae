@@ -1,0 +1,28 @@
+\section{Comparison of Data Mixtures}
+
+Current works, including Common Pile, Phi-4, Nemotronc-CC, has combined web, web-rewrite, synthetic-instruction data, code data and curated in various proportions. We note that Comma0.1, upsampled peSo 16x for example, and that dataset makes 27\% of the training dataset, which is believed to improve the evaluation performance of the dataset. Comma0.1 also includes a very small set of instruction data from their DPI subset. Similarly, Phi4 performed ablations to find an optimal mixture of synthetic to organic data, but do not release their datasets. 
+
+Unlike Comma0.1, we limited the amount of peSo in order to test the perofmance of our organic-synthetic mixture, Like Phi-4, our work also shows that a large proportion of synthetic/instruct data is also helpful in boosting performance, albeit at lower token counts, then either of these dataset.
+
+We present below a comparison of data mixture. As shown, we did not repeat any portion of our dataset. As a contribution for future researchers, we believe using our dataset in addition to other permissive datasets such as Comma0.1, and repeating different portions, such as the synthetic instruct portion.
+
+\begin{table}[h!]
+\centering
+\caption{Data Mixture Comparison: Phi-4 \citep{abdin2024phi4technicalreport} vs. Our Project}
+\label{tab:my_table}
+\begin{tabular}{lcccccc}
+\toprule
+\textbf{Data Source} & \multicolumn{3}{c}{\textbf{Fraction of Training (with Repeats)}} & \multicolumn{3}{c}{\textbf{Unique Token Count}} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-7}
+ & \textbf{Phi-4} & \textbf{Common Pile} & \textbf{\MixtureVitae{}} & \textbf{Phi-4} & \textbf{Common Pile} & \textbf{\MixtureVitae{}} \\
+\midrule
+Web & 15\% (1.2) & 8.7\% (6.0) & 4.4\% (1) & 1.3T & 14.52B & 9.314B \\
+Web rewrites & 15\% (5.2) & -- & 3.7\% (1) & 290B & -- & 7.924B \\
+Synthetic & 40\% (13.8) & 0.5\% (6.0) & 42.3\% (1) & 290B & 0.85B & 89.441B \\
+Code data & 20\% (2.4) & 33.3\% (4.5) & 8.8\% (1) & 820B & 98.85B & 18.640B \\
+Curated & 10\% (1.7) & 57.4\% (3.4) & 41.3\% (1) & 580B & 406.49B & 87.324B \\
+\midrule
+\textbf{Total} & \textbf{100\%} & \textbf{100\%} & \textbf{100\%} & \textbf{3.28T} & \textbf{520.71B} & \textbf{211.341B} \\
+\bottomrule
+\end{tabular}
+\end{table}

@@ -1,0 +1,114 @@
+\section{Experiment Setup Details}
+\label{app:exp_setup}
+To ensure full reproducibility, this appendix details the complete experimental setup. This includes the model architectures for all scales, the training hyperparameters for both 50B and 300B token budgets, and the specific settings used for all general evaluation benchmarks.
+
+%We use the GPT-NeoX~\citep{black2022gptneox20bopensourceautoregressivelanguage} tokenizer, and the \textbf{open-sci-ref}~\citep{opensciref001arxiv} system which is based on the Megatron-LM training framework.
+
+%Unlike for Comma 0.1, Phi4, and Smol2, we specifically decided not to train using a staged or curriculum method (multi-stage with post-training). Instead, we wished to experiment with including a significant amount of post-training data into a single pretraining stage, hypthoesizing that this would improve performance as suggested by the Phi4 work. 
+
+\input{tables/architecture_hparams}
+\input{tables/training_hparams}
+
+
+\subsection{Training Setup Parameters}
+\label{app:hyperparams}
+
+This appendix details the exact model architectures and training hyperparameters used for all experiments, ensuring full reproducibility. 
+
+We adopt the standard architectures and scales from the \textbf{open-sci-ref} framework to allow for a fair and direct comparison against other published baselines. All models were trained with tied embedding weights. 
+
+\paragraph{Model Architecture}
+Table~\ref{tab:opensciref_scales} defines the four model scales used in our study. The columns are defined as follows:
+
+\begin{description}
+    \item[Parameters (B) (Non-Emb + Emb)] The total model parameters in billions, separated into \textbf{Non-Embedding} (Non-Emb) parameters (the core transformer blocks) and \textbf{Embedding} (Emb) parameters (the token lookup tables). As noted in the caption, we used tied embedding weights.
+    \item[Layers] The total number of transformer blocks stacked in the model.
+    \item[Hidden] The hidden size (or embedding dimension, $d_{\text{model}}$) of the model.
+    \item[Heads] The number of attention heads in the multi-head attention mechanism.
+    \item[FFN Hidden] The inner dimension of the Feed-Forward Network (FFN) layer within each transformer block.
+    \item[Memory] The approximate VRAM required to store the model weights, in bfloat16.
+    \item[FLOPs] An approximation of the training compute cost using the  \textbf{6N} rule: a standard estimate for a transformer's forward-and-backward pass, where \textbf{N} is the number of \textit{non-embedding} parameters~\citep{kaplan2020scalinglawsneurallanguage}.
+\end{description}
+
+
+\paragraph{Training Schedules}
+Table~\ref{tab:training_schedules} defines the training hyperparameters for our two main experimental runs (50B and 300B tokens). We use a single stage training with no post-training.
+
+\begin{description}
+    \item[Tokens] The total number of tokens in the training run.
+    \item[Global Batch Size (tokens)] The total number of tokens processed in a single training step (i.e., one gradient update) across all GPUs.
+    \item[Iterations] The total number of training steps.
+    \item[Learning Rate] The peak learning rate used during training.
+    \item[Warmup] The number of initial \textit{iterations} (steps) over which the learning rate linearly increases from 0 to its peak value.
+    \item[Cooldown (20\%)] The number of final \textit{iterations} (the last 20\% of training) over which the learning rate decays to zero.
+\end{description}
+
+%The specific architectures are detailed in Table~\ref{tab:opensciref_scales} and the training schedules are provided in Table~\ref{tab:training_schedules}.
+
+\subsection{Evaluation Settings}
+\label{sec:appendix_eval_settings}
+
+We used the \texttt{lm-evaluation-harness} \citep{eval-harness} for all general evaluations. The specific tasks and few-shot counts are detailed in Table~\ref{tab:eval_settings_general}. The settings for the reasoning tasks (e.g., GSM8K, IFEval) are listed separately in Table\ref{tab:reasoning-eval-settings}.
+
+\begin{table}[ht]
+\centering
+\caption{General evaluation benchmark settings. All tasks use Accuracy as the primary metric.}
+\label{tab:eval_settings_general}
+\begin{tabular}{@{}llc@{}}
+\toprule
+Task & Citation & \# of Shots \\
+\midrule
+MMLU & \cite{hendrycks2021mmlu} & 5 \\
+HellaSwag & \cite{zellers2019hellaswag} & 10 \\
+CommonSenseQA & \cite{talmor2019commonsenseqa} & 10 \\
+ARC-Challenge & \cite{clark2018arc} & 10 \\
+ARC-Easy & \cite{clark2018arc} & 10 \\
+PIQA & \cite{bisk2019piqareasoningphysicalcommonsense} & 10 \\
+BoolQ & \cite{clark2019boolq} & 10 \\
+Winogrande & \cite{sakaguchi2020winogrande} & 0 \\
+OpenBookQA & \cite{mihaylov2018openbookqa} & 0 \\
+COPA & \cite{copa} & 0 \\
+LAMBADA & \cite{paperno2016lambada} & 0 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% \begin{table}[ht]
+% \centering
+% \scriptsize
+% \caption{Evaluation results for ablation models on non-reasoning tasks. All tasks use Accuracy as the primary metric. To execute the evaluation, we used LM Evaluation Harness \cite{eval-harness}.}
+% \begin{tabular}{llrrrrrrr}
+% \toprule
+% Training Dataset & Tokens & COPA & MMLU & HellaSwag & PIQA & ARC-C & BoolQ & avg \\
+% \midrule
+% \MixtureVitae{} & 300B & 0.73 & 0.38 & 0.41 & 0.70 & 0.35 & 0.74 & 0.55 \\
+% \midrule
+% MixtureVitae-web-\&-instruct & 100B & 0.68 & 0.36 & 0.38 & 0.69 & 0.35 & 0.70 & 0.53 \\
+% MixtureVitae & 100B & 0.67 & 0.32 & 0.37 & 0.69 & 0.32 & 0.72 & 0.51 \\
+% MixtureVitae-permissive-only & 100B & 0.67 & 0.31 & 0.37 & 0.67 & 0.30 & 0.69 & 0.50 \\
+% MixtureVitae-curated-\&-instruct & 100B & 0.66 & 0.31 & 0.37 & 0.68 & 0.30 & 0.66 & 0.50 \\
+% MixtureVitae-web-\&-curated & 100B & 0.66 & 0.25 & 0.36 & 0.68 & 0.28 & 0.60 & 0.47 \\
+% \midrule
+% MixtureVitae-instruct & 80B & 0.67 & 0.35 & 0.36 & 0.68 & 0.31 & 0.67 & 0.51 \\
+% MixtureVitae & 80B & 0.69 & 0.29 & 0.37 & 0.68 & 0.31 & 0.69 & 0.50 \\
+% MixtureVitae-curated & 80B & 0.65 & 0.25 & 0.34 & 0.66 & 0.25 & 0.55 & 0.45 \\
+% \bottomrule
+% \end{tabular}
+% \label{tab:non-reasoning-evals}
+% \end{table}
+
+
+\begin{table}[ht]
+\centering
+\caption{Evaluation settings for reasoning tasks. All tasks use Accuracy as the primary metric. To execute the evaluation, we used LM Evaluation Harness \cite{eval-harness}.}
+\label{tab:reasoning-eval-settings}
+\begin{tabular}{llccl}
+\toprule
+Task & Citation & \# of Shots \\
+\midrule
+GSM8k & ~\cite{cobbe2021training} &  4 \\
+IFEval & ~\cite{zhou2023instruction} &  0 \\
+MBPP & ~\cite{austin2021programsynthesislargelanguagen} & 4 \\
+\bottomrule
+\end{tabular}
+\end{table}

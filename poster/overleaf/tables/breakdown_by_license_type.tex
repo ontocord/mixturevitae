@@ -1,0 +1,73 @@
+% This code is compatible with your existing packages.
+% Assumes you have already loaded: booktabs, longtable, hyperref
+% \refstepcounter{table}
+\begin{longtable}{p{4cm} p{7cm} r}
+
+% This is the caption that will appear above the table.
+% \caption{Breakdown of the Dataset by Source and License}
+% \label{tab:breakdown_by_license_type}\\
+
+% --- HEADERS ---
+% This header appears on the FIRST page of the table.
+\toprule
+\textbf{License Type} & \textbf{Source / Data} & \textbf{Size} \\
+\midrule
+\endfirsthead
+
+% This header appears on ALL SUBSEQUENT pages of the table.
+\multicolumn{3}{c}%
+{{\bfseries\tablename\ \thetable{} -- continued from previous page}} \\
+\toprule
+\textbf{License Type} & \textbf{Source / Data} & \textbf{Size} \\
+\midrule
+\endhead
+
+% --- FOOTERS ---
+% This footer appears at the bottom of every page EXCEPT the last one.
+\bottomrule
+\multicolumn{3}{r}{{Continued on next page}} \\
+\endfoot
+
+% This footer appears only on the LAST page of the table.
+\bottomrule
+
+\endlastfoot
+
+% --- WEB SECTION ---
+\multicolumn{3}{c}{\large\textbf{Web}} \\
+\multicolumn{3}{l}{\footnotesize\textit{*All data in this section subject to Common Crawl Terms of Uses}} \\
+\midrule
+Public Domain (copyright expired) & US Federal governmental websites including a small portion of Project Gutenberg out of copyright literature inclded in the web portion, & 6B \\
+\addlinespace % Adds a little vertical space for readability
+Risk-mitigated government data & Non US federal government works & 11B \\
+\addlinespace
+CC-BY-SA* licenses or more permissive & Specific curated websites and heuristicly mathced websites (See Sec. J) & 2B \\
+\midrule
+
+% --- CURATED SECTION ---
+\multicolumn{3}{c}{\large\textbf{Curated}} \\
+\midrule
+Public Domain & US Case law, SEC 10K, Europat, USPTO & 4 B \\
+\addlinespace
+CC-BY-SA* licenses or more permissive & News, wiki,  Youtube, peS2o, Pubmed, Arxiv, Stackexchange, elsevier-oa-cc-by,  & 24.67+10.31+5.21+3.69B \\
+\addlinespace
+Non-GPL open source license (e.g., Open-RAIL, Apache, MIT) & Stackv1 and its derivatives & 6.4+18.64 B \\
+\midrule
+
+% --- INSTRUCT SECTION ---
+\multicolumn{3}{c}{\large\textbf{Instruct}} \\
+\midrule
+CC-BY.* licenses or more permissive & math\_word\_problems & 1.2 GB \\
+& Nemo\_science\_math & 79 GB \\
+\addlinespace
+Non-GPL open source license (e.g., Apache, MIT) & Prism\_math (cc-by-4.0), Os-q2, Formatted\_text (only websights), misc\_instruct (cc-by-4.0) & 105 GB \\
+& Glaiveai-reasoning (apache), Ring-lite (apache), Open\_thoughts (apache), Ling-coder (apache), Few-shot (from \href{https://huggingface.co/datasets/Muennighoff/P3}{P3}, apache), misc\_instruct (apache 2.0), Math (apache 2.0) & 458.6 GB \\
+& dart-math, misc\_instruct (MIT) & 5 GB \\
+& pyedu\_reasoning & 11 GB \\
+% \captionof{table}{Breakdown of the Dataset by Source and License}
+\end{longtable}
+\addtocounter{table}{-1} % Corrects the counter for the caption command
+\begin{center}
+    \captionof{table}{Breakdown of the Dataset by Source and License}
+    \label{tab:breakdown_by_license_type}
+\end{center}

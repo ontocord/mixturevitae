@@ -1,0 +1,38 @@
+\section{Related Work}
+\label{sec:related_work}
+
+LLM development is intrinsically linked to the scale and quality of pretraining datasets, which have become larger, more diverse, with a growing emphasis on provenance and licensing recently.
+
+\textbf{Pioneering Large-Scale Datasets} Early large-scale text corpora for language modeling often rely on web-crawled data for scale. C4~\citep{raffel2020exploring}, derived from Common Crawl, is instrumental in training the T5 model, setting standards for large-scale data cleaning and deduplication. \citet{gao2020pile} then introduce The Pile, demonstrating the benefit of a more varied data mixture on model generalization and downstream performance. Similarly, ROOTS~\citep{NEURIPS2022_ce9e92e3} supports the training of the BLOOM model with its 498 Common Crawl multilingual scrapes. While foundational, these datasets often have complex or unspecified licenses, mixing permissive data with content of unknown or non-commercial licensing, creating potential legal risks for commercial applications.
+
+\textbf{Open and Reproducible Datasets}
+Amidst many proprietary "black box" datasets, the community has pushed for more openness and reproducibility, moving toward permissive datasets that are also performant, e.g., RedPajama-1T~\citep{weber2024redpajama} and its processing recipes \citep{touvron2023llamaopenefficientfoundation}, Dolma~\citep{soldaini2024dolma} and its open-source curation toolkits, SILO~\citep{min2024silo}. Our work joins this effort, contributing a new risk-mitigated dataset featuring explicit consideration for the underlying copyright.
+
+\textbf{Permissively Licensed and Synthetic Data}
+Growing awareness of copyright and data ownership has spurred interest in datasets built solely from permissively licensed materials. The Stack \citep{kocetkov2023the} curates such data for code-generation models, but creating a large, diverse, and high-quality corpus for natural language from exclusively permissive sources remains a challenge. Recent efforts like Common Corpus~\citep{langlais2025commoncorpuslargestcollection} and The Common Pile~\citep{kandpal2025commonpilev018tb} advance the creation of large-scale corpora of permissively licensed and public-domain text. While foundational, our experiments (Section~\ref{sec:experiment_results}) show that models trained on them can lag in complex reasoning, math, and instruction following, suggesting that strictly permissive human text alone is insufficient to instill these advanced skills.
+
+With this scarcity of high-quality reasoning and instruction data, researchers have turned to synthetic data. Alpaca~\citep{taori2023alpaca} and OpenMathInstruct-1 \citep{toshniwal2024openmathinstruct} use instructional data for fine-tuning. Phi4 proposes using synthetic data for reasoning tasks \citep{abdin2024phi4technicalreport}. Our work, \MixtureVitae{}, extends these trends with a meticulously curated, permissive-first, risk-mitigated dataset augmented with targeted synthetic data, providing a strong, legally considered foundation for LLM training to mitigate copyright risks in many existing corpora.
+
+The concurrent work of Apertus~\citep{apertus2025apertusdemocratizingopencompliant} provides large-scale multilingual coverage via retroactive opt-out filtering on web-scale sources. In contrast, \MixtureVitae{} focuses on data efficiency through a \textit{positive inclusion strategy}, curating sources known to be permissive (e.g., government works, The Stack) and prioritizing English-centric reasoning density. While Apertus so far released only dataset composition recipes, \MixtureVitae{} provides an already composed, ready-to-use pre-training dataset which facilitates reproduction and experimentation by broad community. Moreover, the dataset provides shard-level provenance, enabling risk-tiered remixes that can be flexibly adapted to dataset usage scenario and risk posture.
+
+% with yet unclear reproducibility
+% we encourage downstream users to select tiers consistent with their risk posture.
+
+% risk-tiered mixture with shard-level provenance and high performance on MMLU, GSM8K, and MBPP with roughly 2\% of the pretraining token budget of a dataset in the size range of Apertus. 
+
+%While both our work and the concurrent Apertus project~\citep{apertus2025apertusdemocratizingopencompliant} value openness and legal safety, they represent distinct, complementary design philosophies. 
+% First, regarding scale versus efficiency, Apertus optimizes for breadth, processing 15T tokens across 1800+ languages using retroactive filtering (e.g., \texttt{robots.txt}) on large web-scale datasets. 
+
+
+%Our results demonstrate that a reasoning-heavy mixture can achieve strong performance on MMLU, GSM8K, and MBPP with roughly 2\% of the pretraining token budget of a dataset in the size range of Apertus. 
+%Finally, whereas Apertus primarily releases recipes and reconstruction scripts, \MixtureVitae{} provides a single, ready-to-use pretraining mixture.
+
+
+\textbf{Mixing Reasoning Data into Pre-Training}
+% Front-Loading Reasoning Data
+Concurrent with our work, \citet{akter2025front} systematically investigate the ``front-loading'' of reasoning data, finding that injecting reasoning data into the pretraining phase establishes foundational capabilities that cannot be replicated by scaling supervised fine-tuning (SFT) alone. Similarly, \cite{wang2025thinking} augment pre-training text data with synthetically generated thinking trajectories. They observe that pre-training augmented with thinking traces strongly outperforms vanilla pretraining using matched compute and token budget (8B model, 100BT) on reasoning/math/language understanding evals. Our findings with \MixtureVitae{} align with and extend this observation to the permissive dataset landscape: we show that by front-loading a diverse, risk-mitigated mixture of reasoning and instruction data, we can achieve competitive performance against non-permissive baselines even with a constrained token budget. For a comparison of \MixtureVitae{} composition to other permissive and non-permissive baselines, see Table~\ref{tab:dataset_comparison}. 
+
+% we encourage downstream users to select tiers consistent with their risk posture.
+
+%We note the concurrent work of Apertus and its permissive recipe ~\citep{hernándezcano2025}, which is unavailable for comparison before submission. 
+

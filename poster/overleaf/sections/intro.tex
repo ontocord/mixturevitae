@@ -1,0 +1,44 @@
+\section{Introduction}
+
+The proliferation of large language models (LLMs) has transformed the landscape of artificial intelligence, yet their development often relies on a legally and ethically precarious foundation. The vast majority of performant models are pretrained on massive web scrapes, indiscriminately mixing public-domain content with copyrighted materials such as books, news articles, and personal websites without explicit permission \citep{raffel2020exploring, gao2020pile}. This practice has led to a growing number of copyright infringement lawsuits,  creating significant legal uncertainty for both
+academic researchers and commercial developers and threatening the future of the field. At the same
+time, practitioners who wish to avoid this risk have few alternatives, as most high-performing
+pretraining mixtures rely, at least in part, on opaque or non-permissive web scrapes.
+
+
+Compounding this uncertainty is the prevailing assumption that state-of-the-art performance is inextricably linked to the sheer scale and diversity offered by these legally ambiguous web scrapes. The absence of a high-performance, large-scale pretraining dataset that actively mitigates these risks has forced a difficult choice between performance and compliance. In practice, the strongest open
+baselines such as FineWeb-Edu~\citep{penedo2024} and DCLM~\citep{li2024datacomplm} still rely on mixed-license or unspecified web data,
+whereas strictly permissive corpora tend to lag behind them on reasoning-heavy benchmarks.
+This raises a critical question: Can
+a powerful language model be trained on a dataset that provides a more legally robust foundation?
+
+To this question, we answer "yes": We introduce \MixtureVitae{}, a \textbf{\DatasetSize{}}-billion-token, open-access pretraining dataset constructed to minimize copyright risk while explicitly demonstrating that a
+reasoning- and instruction-dense, permissive-first mixture can substantially close the performance gap to leading
+non-permissive corpora. The core of \MixtureVitae{}'s "permissive-first" data comprise (1) text with clear and permissive licenses (e.g., CC-BY-*, Apache 2.0), public-domain text, and copyright-exempt text such as US federal works (see Appendix~\ref{app:govt_works}) and (2) risk-mitigated text. Following Phi-4~\citep{abdin2024phi4technicalreport}, which shows that the addition of synthetic and web-rewrite data boosts performance, we address the scarcity of real, human-written reasoning and conversational dialogue in strictly permissive sources by significantly augmenting \MixtureVitae{} with targeted synthetic data, which is derived from permissive models and sources. We call this combination of expressly licensed and risk-mitigated methods the \textbf{"permissive-first"} approach. 
+
+
+To validate our approach, we train models with \textbf{130M, 400M, 1.3B, and 1.7B parameters} on \MixtureVitae{} and compare their performance against several prominent open datasets. The results first confirm that \MixtureVitae{} \textbf{significantly outperforms all other permissively licensed baselines}, with the performance gap widening as the model scale increases. The more critical test, however, is against popular non-permissive datasets containing higher proportions of copyrighted or ambiguously-licensed material. In this setting, our models achieve competitive performance, and on math and code benchmarks, our 1.7B base model matches or exceeds a strong 1.7B instruction-tuned baseline despite being trained on a dramatically smaller token budget. 
+
+In summary, our contributions are threefold:
+
+\textbf{1. Permissive-first, risk-mitigated, and performant recipe for pretraining corpora.} We present \MixtureVitae{}, the first highly-performant, permissive-first, and risk-mitigated pretraining corpus that deliberately front-loads high-quality reasoning and instruction data to drive capability gains in small models. It is organized into auditable provenance tiers and constructed via a positive-inclusion pipeline, avoiding the need for retroactive filtering.
+
+\textbf{2. We demonstrate that reliance on indiscriminately scraped, high-risk copyrighted data is not a prerequisite for training capable LLMs.} Leveraging the \texttt{open-sci-ref}~\citep{nezhurina2025opensciref001openreproduciblereference} protocol to ensure rigorous comparison across 130M–1.7B parameter scales, we demonstrate the value of front-loading instruction and reasoning data into pre-training. Our \DatasetSize{}B-token, permissive-first mixture closes the gap to mixed-license baselines while providing an auditable legal provenance. Furthermore, we show that our 1.7B base model, despite a limited 300B token budget, is comparable across multiple reasoning benchmarks to a strong 1.7B instruction‑tuned baseline—trained on roughly $36\times$ more tokens ($\approx$11T).
+
+\textbf{3. Evaluation integrity and reusable artifacts}. We perform a large-scale 13-gram decontamination analysis across all benchmarks, showing that \MixtureVitae{}’s gains persist on decontaminated test sets and when removing shards responsible for most detected overlap, and we release the corpus, shard-level provenance metadata, and curation code to enable compliant, reproducible pretraining in future work. 
+
+% \vspace{-0.2cm}
+
+% \vspace{-0.4cm}
+
+% \begin{itemize}
+% \item
+% \textbf{Permissive-first, risk-mitigated, and performant recipe for pretraining corpora.} We present \MixtureVitae{}, the first highly-performant, permissive-first, and risk-mitigated pretraining corpus that deliberately front-loads high-quality reasoning and instruction data to drive capability gains in small models. It is organized into auditable provenance tiers and constructed via a positive-inclusion pipeline, avoiding the need for retroactive filtering.
+% \item
+% \textbf{We demonstrate that reliance on indiscriminately scraped, high-risk copyrighted data is not a prerequisite for training capable LLMs.}
+% Leveraging the \texttt{open-sci-ref}~\citep{nezhurina2025opensciref001openreproduciblereference} protocol to ensure rigorous comparison across 130M–1.7B parameter scales, we demonstrate the value of front-loading instruction and reasoning data into pre-training. Our \DatasetSize{}B-token, permissive-first mixture closes the gap to mixed-license baselines while providing an auditable legal provenance. Furthermore, we show that our 1.7B base model, despite a limited 300B token budget, is comparable across multiple reasoning benchmarks to a strong 1.7B instruction‑tuned baseline—trained on roughly $36\times$ more tokens ($\approx$11T).
+
+% \item
+% \textbf{Evaluation integrity and reusable artifacts}. We perform a large-scale 13-gram decontamination analysis across all benchmarks, showing that \MixtureVitae{}’s gains persist on decontaminated test sets and when removing shards responsible for most detected overlap, and we release the corpus, shard-level provenance metadata, and curation code to enable compliant, reproducible pretraining in future work.
+
+% \end{itemize}

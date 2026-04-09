@@ -1,0 +1,55 @@
+\section{Reproducibility statement}
+% Due to the anonymity requirements and the design of OpenReview, at the time of ICLR submission, the
+% following resources are made available to the reviewers. All source codes, including those for training and evaluation are provided in the supplementary material. The dataset employed in this study is too large to be shared during the submission stage. We will make it publicly available upon acceptance of the paper.
+% The model checkpoints are not shared due to their large file sizes, which makes
+% anonymous sharing infeasible. Similarly, while we plan to release the training logs via wandb, maintaining
+% anonymity remains a challenge, so they are not included at this stage.
+
+We release our code at \url{https://anonymous.4open.science/r/mixturevitae-FEFE}
+, with a frozen snapshot at commit~\texttt{6785991a} corresponding to this submission.
+
+
+\subsection{Dataset and Curation Recipes}
+
+
+\begin{itemize}
+    \item \textbf{Public Release:} The full \DatasetSize{}\textbf{B} token dataset, along with the 100B and 50B subsets used for scaling ablations experiments, will be made publicly available upon acceptance of this paper.
+    \item \textbf{Curation Methodology:}
+        \begin{itemize}
+            %\item License-aware filtering using domain allowlists and keyword matching.
+            %\item Safety and quality screening protocols.
+            %\item Intra-dataset, prefix-based deduplication strategies.
+            \item \textbf{Dataset Composition} The detailed list of sources and their composition are shown in Figure~\ref{fig:data_comp_deets}.
+            \item \textbf{Code}: We are including our  data curation and math word problem generation scripts with the submission.
+        \end{itemize}
+\end{itemize}
+
+\subsection{Training Procedure}
+
+To ensure our experiments are directly comparable and reproducible, we adhered to a controlled, public framework.
+\begin{itemize}
+    \item \textbf{Framework:} All experiments were conducted using the \textbf{open-sci-ref} training procedure~\citep{nezhurina2025opensciref001openreproduciblereference}, which standardizes key factors affecting performance.
+    \item \textbf{Architectures:} The exact model architectures for all four scales (0.13B, 0.4B, 1.3B, 1.7B) are detailed in Table~\ref{tab:opensciref_scales}.
+    \item \textbf{Hyperparameters:} The complete training schedules and hyperparameters (learning rate, batch size, warmup, etc.) for both the 50B and 300B token budgets are specified in Table~\ref{app:hyperparams}.
+    \item \textbf{Software:} Models were trained using Megatron-LM~\citep{shoeybi2020megatronlmtrainingmultibillionparameter} with the GPT-NeoX-20B tokenizer\citep{black2022gptneox}.
+    \item \textbf{Code}: We are including our training script with the submission.
+\end{itemize}
+
+\subsection{Evaluation and Analysis}
+
+Our evaluation protocol is fully specified to allow for independent verification of our results.
+\begin{itemize}
+    \item \textbf{Framework:} All general and reasoning task evaluations were performed using the public LM Evaluation Harness~\citep{eval-harness}.
+    \item \textbf{Settings:} The exact settings for each benchmark, including the number of few-shot examples, are provided in Table~\ref{tab:eval_settings_general} and Table~\ref{tab:reasoning-eval-settings}.
+    \item \textbf{Decontamination:} Our 13-gram decontamination protocol is detailed in Appendix~\ref{app:contamination}.
+    \item \textbf{Code}: We are including our evaluation and decontamination scripts with the submission.
+\end{itemize}
+
+While model checkpoints and training logs are not included in the initial submission due to size and anonymity constraints, we plan to release these upon publication to facilitate future research.
+
+
+\section{Limitations and Broader Impact Statement}
+
+\paragraph{Limitations.} While the dataset improves the current state-of-the-art in the legal risk mitigation of hgh-performing pretraining data, upstream provenance may still contain errors with respect to licensing. We mitigate by tiering sources, providing explicit shard-level audit metadata, and applying filtering and decontamination; we encourage downstream users to select tiers consistent with their risk posture. Further automation of licensing check procedures is a subject of future work. The dataset has a scale of 422B tokens, which is not sufficient for larger-scale pre-training, and future work should investigate scaling up the presented dataset composition recipe.
+
+\paragraph{Broader Impact Statement.} The dataset improves transparency and reduces legal uncertainty for open pre-training, providing a safe ground for research, experimentation and development for the open-source community. It also can boost the trust of the general public into open-source machine-learning research that can be executed on well-validated, transparent artifacts with clear origins and widely accepted licensing schemes for broad re-use.

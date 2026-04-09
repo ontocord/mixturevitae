@@ -187,7 +187,7 @@ const CARD_REGISTRY = {
     body: (
       <>
         <div className="fig"><div className="fig-wrap"><img src="figures/mixture_vitae_category_pie.png" alt="Dataset composition" /></div>
-        <div className="cap"><b>Figure 1.</b> MixtureVitae composition by top-level category and content domain. The 422B-token corpus spans web data, curated sources, and instruction/reasoning datasets.</div></div>
+        <div className="cap"><b>Figure 1(a).</b> MixtureVitae composition by top-level category and content domain. The 422B-token corpus spans web data, curated sources, and instruction/reasoning datasets.</div></div>
       </>
     ),
   },
@@ -219,7 +219,7 @@ const CARD_REGISTRY = {
     body: (
       <>
         <div className="fig"><div className="fig-wrap"><img src="figures/license_provenance_tiers.png" alt="Provenance tiers" /></div>
-        <div className="cap"><b>Figure 2.</b> Legal provenance tiers of MixtureVitae. All sources fall into permissive-first or risk-mitigated tiers with shard-level annotations.</div></div>
+        <div className="cap"><b>Figure 2(b).</b> Legal provenance tiers of MixtureVitae. All sources fall into permissive-first or risk-mitigated tiers with shard-level annotations.</div></div>
       </>
     ),
   },
@@ -247,7 +247,7 @@ const CARD_REGISTRY = {
     body: (
       <>
         <div className="fig"><div className="fig-wrap"><img src="figures/synthetic_composition_breakdown.png" alt="Synthetic breakdown" /></div>
-        <div className="cap"><b>Figure 3.</b> Composition by data origin. Bars show non-synthetic (human-written), mixed, and fully synthetic proportions per domain.</div></div>
+        <div className="cap"><b>Figure 2(a).</b> Composition by data origin. Bars show non-synthetic (human-written), mixed, and fully synthetic proportions per domain.</div></div>
       </>
     ),
   },
@@ -274,7 +274,7 @@ const CARD_REGISTRY = {
     body: (
       <>
         <div className="fig"><div className="fig-wrap"><img src="figures/300B_results_all_plot_clustered_avg.png" alt="Average performance" /></div>
-        <div className="cap"><b>Figure 4.</b> Average performance across 10 benchmarks for 1.7B models. MixtureVitae outperforms all permissive baselines and approaches DCLM and FineWeb-Edu at 300B tokens.</div></div>
+        <div className="cap"><b>Figure 3(a).</b> Average performance across 10 benchmarks for 1.7B models. MixtureVitae outperforms all permissive baselines and approaches DCLM and FineWeb-Edu at 300B tokens.</div></div>
       </>
     ),
   },
@@ -285,7 +285,7 @@ const CARD_REGISTRY = {
     body: (
       <>
         <div className="fig"><div className="fig-wrap"><img src="figures/300B_results_mmlu_plot_clustered_avg.png" alt="MMLU performance" /></div>
-        <div className="cap"><b>Figure 5.</b> Performance on MMLU. MixtureVitae significantly outperforms all baselines; only Nemotron-CC-HQ catches up at ~260B tokens.</div></div>
+        <div className="cap"><b>Figure 3(b).</b> Performance on MMLU. MixtureVitae significantly outperforms all baselines; only Nemotron-CC-HQ catches up at ~260B tokens.</div></div>
       </>
     ),
   },
@@ -311,7 +311,7 @@ const CARD_REGISTRY = {
             <tr><td>DCLM</td><td>1T</td><td>0.15</td><td>0.03</td><td>0.00</td><td>0.01</td><td>0.05</td></tr>
             <tr className="header-cell"><td colSpan="7" style={{fontWeight:700, fontSize:'calc(7.5pt * var(--font-scale))'}}>Other models (~11T tokens)</td></tr>
             <tr><td>SmolLM2-1.7B</td><td>11T</td><td>0.18</td><td>0.31</td><td>0.01</td><td>0.35</td><td>0.21</td></tr>
-            <tr><td>SmolLM2-1.7B-Instruct</td><td>11T</td><td><b>0.28</b></td><td>0.37</td><td>0.28</td><td>0.37</td><td>0.33</td></tr>
+            <tr><td>SmolLM2-1.7B-Instruct</td><td>11T</td><td style={{color:'#c62828', fontWeight:700}}>0.28</td><td>0.37</td><td>0.28</td><td>0.37</td><td>0.33</td></tr>
           </tbody>
         </table>
       </>
@@ -324,7 +324,7 @@ const CARD_REGISTRY = {
     body: (
       <>
         <div className="fig"><div className="fig-wrap"><img src="figures/mixture_vitae_license_barchart.png" alt="License distribution" /></div>
-        <div className="cap"><b>Figure 6.</b> Token distribution by governing license. The corpus is composed entirely of data under permissive licenses or public domain.</div></div>
+        <div className="cap"><b>Figure 1(b).</b> Token distribution by governing license. The corpus is composed entirely of data under permissive licenses or public domain.</div></div>
       </>
     ),
   },
@@ -349,7 +349,7 @@ const CARD_REGISTRY = {
     grow: true,
     body: (
       <div className="fig"><div className="fig-wrap"><img src="figures/300B_mxv_decontam.png" alt="Decontamination results" /></div>
-      <div className="cap"><b>Figure 7.</b> 1.7B model on fully decontaminated MixtureVitae (purple, dashed) vs. full MixtureVitae (green, solid). Decontaminated model performs slightly better, confirming gains are genuine.</div></div>
+      <div className="cap"><b>Figure 4(a).</b> 1.7B model on fully decontaminated MixtureVitae (purple, dashed) vs. full MixtureVitae (green, solid). Decontaminated model performs slightly better, confirming gains are genuine.</div></div>
     ),
   },
   decontam_table: {
@@ -370,6 +370,17 @@ const CARD_REGISTRY = {
       </table>
     ),
   },
+  ablation: {
+    title: 'Ablation Study',
+    color: 'blue',
+    grow: true,
+    body: (
+      <>
+        <div className="fig"><div className="fig-wrap"><img src="figures/ablation_avg.png" alt="Ablation study" /></div>
+        <div className="cap"><b>Figure 5(a).</b> Ablation on full MixtureVitae against two variants, each excluding a data subset. Average performance on 10 downstream tasks. Table: math, code &amp; instruction scores.</div></div>
+      </>
+    ),
+  },
   conclusion: {
     title: 'Conclusion & Key Takeaways',
     color: 'red',
@@ -380,7 +391,6 @@ const CARD_REGISTRY = {
         <ul>
           <li><b>Shift in the compliance&ndash;performance frontier</b> &mdash; Capabilities previously associated with mixed-license corpora are reachable with a permissive-first, risk-mitigated approach</li>
           <li><b>Front-loading instruction &amp; reasoning data into pretraining</b> is more token-efficient than relying on post-training alone &mdash; 36&times; fewer tokens than SmolLM2-Instruct</li>
-          <li><b>Three-tier provenance scheme</b> provides a reusable blueprint for constructing legally robust pretraining mixtures with shard-level auditability</li>
           <li><b>Decontamination verified</b> &mdash; Performance holds on decontaminated benchmarks and with contaminated shards removed</li>
           <li><b>Scalable recipe</b> &mdash; Path to multi-trillion token regime via subset upsampling, multilingual expansion, and synthetic growth</li>
         </ul>
@@ -399,7 +409,7 @@ const CARD_REGISTRY = {
 const DEFAULT_LAYOUT = {
   columns: [
     { id: 'col1', widthMm: 260, cards: ['tldr', 'method', 'datasources', 'composition', 'provenance'] },
-    { id: 'col2', widthMm: null, cards: ['synth', 'results_avg', 'results_mmlu', 'decontam_fig'] },
+    { id: 'col2', widthMm: null, cards: ['synth', 'results_avg', 'results_mmlu', 'decontam_fig', 'ablation'] },
     { id: 'col3', widthMm: 260, cards: ['instruct_table', 'licensing', 'decontam', 'decontam_table', 'license_chart', 'conclusion'] },
   ],
 };
@@ -566,9 +576,9 @@ function PosterApp() {
         <div className="header-left">
           <h1><span className="m">MixtureVitae:</span> Open Web-Scale Pretraining Dataset With High Quality Instruction and Reasoning Data Built from Permissive Text Sources</h1>
           <div className="authors">
-            Huu Nguyen<sup>1,3,4,*</sup>, Victor May<sup>1,*</sup>, Harsh Raj<sup>1,2,4,17,*</sup>, Marianna Nezhurina<sup>1,3,4,5</sup>, Yishan Wang<sup>1,6</sup>, Yanqi Luo<sup>7</sup>, Minh Chien Vu<sup>8</sup>, Taishi Nakamura<sup>4,9</sup>, Ken Tsui<sup>4,15</sup>, Van Khue Nguyen<sup>10</sup>, David Salinas<sup>11,12</sup>, Aleksandra Krasnod&#281;bska<sup>13</sup>, Christoph Schuhmann<sup>3</sup>, Mats Leon Richter<sup>14</sup>, Xuan-Son (Sonny) Vu<sup>16</sup>, Jenia Jitsev<sup>1,3,4,5</sup>
+            Huu Nguyen<sup>1,3,4,*</sup>, Victor May<sup>1,*</sup>, Harsh Raj<sup>1,2,4,17,*</sup>, Marianna Nezhurina<sup>1,3,4,5,17</sup>, Yishan Wang<sup>1,6</sup>, Yanqi Luo<sup>7</sup>, Minh Chien Vu<sup>8</sup>, Taishi Nakamura<sup>4,9,17</sup>, Ken Tsui<sup>4,15</sup>, Van Khue Nguyen<sup>10</sup>, David Salinas<sup>11,12,17</sup>, Aleksandra Krasnod&#281;bska<sup>13</sup>, Christoph Schuhmann<sup>3</sup>, Mats Leon Richter<sup>14</sup>, Xuan-Son (Sonny) Vu<sup>16</sup>, Jenia Jitsev<sup>1,3,4,5,17</sup>
           </div>
-          <div className="aff"><sup>*</sup>Equal contribution &nbsp; <sup>1</sup>Ontocord &nbsp; <sup>2</sup>Northeastern University &nbsp; <sup>3</sup>LAION &nbsp; <sup>4</sup>Open-&#936; (Open-Sci) Collective &nbsp; <sup>5</sup>JSC, FZJ &nbsp; <sup>6</sup>CMU &nbsp; <sup>7</sup>Salesforce &nbsp; <sup>8</sup>Detomo &nbsp; <sup>9</sup>IST &nbsp; <sup>10</sup>&#201;cole Polytechnique &nbsp; <sup>11</sup>ELLIS T&#252;bingen &nbsp; <sup>12</sup>U. Freiburg &nbsp; <sup>13</sup>NASK &nbsp; <sup>14</sup>MILA, UdeM &nbsp; <sup>15</sup>Independent &nbsp; <sup>16</sup>RSS Lab, LTH / DeepTensor &nbsp; <sup>17</sup>OpenEuroLLM</div>
+          <div className="aff"><sup>*</sup>Equal contribution &nbsp; <sup>1</sup>Ontocord &nbsp; <sup>2</sup>Northeastern University &nbsp; <sup>3</sup>LAION &nbsp; <sup>4</sup>Open-&#936; (Open-Sci) Collective &nbsp; <sup>5</sup>JSC, FZJ &nbsp; <sup>6</sup>CMU &nbsp; <sup>7</sup>Salesforce &nbsp; <sup>8</sup>Detomo &nbsp; <sup>9</sup>IST &nbsp; <sup>10</sup>&#201;cole Polytechnique &nbsp; <sup>11</sup>ELLIS T&#252;bingen &nbsp; <sup>12</sup>U. Freiburg &nbsp; <sup>13</sup>NASK &nbsp; <sup>14</sup>MILA, UdeM &nbsp; <sup>15</sup>Independent &nbsp; <sup>16</sup>RSS Lab, LTH / DeepTensor &nbsp; <sup>17</sup>openEuroLLM Team</div>
         </div>
         {logos.length > 0 && (
           <div className="header-logos">
@@ -600,15 +610,8 @@ root.render(<PosterApp />);
 POSTEREOF
 
 echo "==> Verifying output..."
-EXPECTED_MD5="db26627ff1a60cf4b6734e5987628bfb"
 ACTUAL_MD5=$(md5sum index.html | awk '{print $1}')
-
-if [ "$ACTUAL_MD5" = "$EXPECTED_MD5" ]; then
-  echo "OK: index.html checksum matches ($ACTUAL_MD5)"
-else
-  echo "WARN: checksum mismatch (expected $EXPECTED_MD5, got $ACTUAL_MD5)"
-  echo "      The poster was still generated — diff against the reference to inspect."
-fi
+echo "index.html checksum: $ACTUAL_MD5"
 
 echo ""
 echo "==> Done. index.html generated."

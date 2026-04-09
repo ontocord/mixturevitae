@@ -1,0 +1,88 @@
+\begin{figure*}[!htbp]
+  \centering
+  \resizebox{\linewidth}{!}{%
+    \begin{tikzpicture}[
+        node distance = 0.5cm and 0.5cm,
+        every node/.style = {font=\sffamily\large},
+        source/.style = {rectangle, draw, rounded corners=10pt, minimum width=3.2cm, minimum height=0.9cm, 
+                         align=center, blur shadow={shadow opacity=25}},
+        web/.style = {source, fill=red!15, text=red!80!black},
+        curated/.style = {source, fill=teal!15, text=teal!70!black},
+        synth/.style = {source, fill=violet!20, text=violet!70!black},
+        process/.style = {rectangle, draw, rounded corners=10pt, thick, minimum width=3.8cm, text width=3.8cm, 
+                          minimum height=1.8cm, align=center, fill=gray!25, blur shadow={shadow opacity=25}},
+        output/.style = {ellipse, draw, thick, minimum width=4cm, minimum height=2cm, align=center, 
+                         top color=yellow!10, bottom color=yellow!40, blur shadow={shadow opacity=35}},
+        label/.style = {font=\sffamily\Large},
+        arrow/.style = {-{Latex[length=3mm,width=2.5mm]}, thick},
+        fitbox/.style = {draw, rounded corners=15pt, inner sep=0.6cm, thick, dashed}
+      ]
+
+      % --- Row 1: Open Web Pipeline ---
+      \node[web] (ccorp) at (-16, 7) {CommonCorpus};
+      \node[web] (fvid) [right=of ccorp] {FineVideo};
+      \node[web] (rp1) [right=of fvid] {RedPajama v1};
+      \node[web] (maga) [below=of ccorp] {magacorpus};
+      \node[web] (nemo) [right=of maga] {nemotron-cc};
+      \node[web] (txt) [right=of nemo] {txt360};
+      \node[web] (pile) [below=of maga] {Pile};
+      \node[web] (fwe) [right=of pile] {Fineweb-edu};
+      \node[web] (cosmo) [right=of fwe] {cosmopedia-v2};
+      \node[fitbox, fit=(ccorp)(cosmo)] (web_box) {};
+      \node[label, text=red!80!black, above=0.2cm of web_box] {Open Web};
+
+      \node[process] (p1) at (-3, 6.5) {Permissive \\ Filtering};
+      \node[process] (p2) [right=1cm of p1] {Dedup \& \\ Heuristic Filtering};
+      \node[process] (p3) [right=1cm of p2] {Fasttext \\ Filtering};
+
+      % --- Row 2: Curated Pipeline ---
+      \node[curated] (sec) at (-11, 1) {SEC Filings};
+      \node[curated] (mega) [right=of sec] {MegaWiki};
+      \node[curated] (arxiv) [right=of mega] {ArXiv};
+      \node[curated] (stackv1) [below=of sec] {Stack V1};
+      \node[curated] (uspto) [right=of stackv1] {USPTO};
+      \node[curated] (dmmath) [right=of uspto] {Deepmind Math};
+      \node[curated] (valid) [below=of stackv1] {VALID};
+      \node[curated] (yt) [right=of valid] {YouTube Commons};
+      \node[curated] (olc) [right=of yt] {OLC};
+      \node[fitbox, fit=(sec)(olc)] (curated_box) {};
+      \node[label, text=teal!70!black, above=0.2cm of curated_box] {Curated};
+      
+      \node[process] (p_curated) at (1.5, 0.5) {Curated Data \\ Filtering};
+
+      % --- Row 3: Synthetic Pipeline ---
+      \node[synth] (mwp) at (-6, -5) {Math Word Problems};
+      \node[synth] (dart) [right=of mwp] {Dart-Math};
+      \node[synth] (glaive) [right=of dart] {glaive-ai reasoning};
+      \node[synth] (ot) [below=of mwp] {Open Thoughts};
+      \node[synth] (lc) [right=of ot] {Ling Coder};
+      \node[synth] (nm) [right=of lc] {Nemo-Math};
+      \node[synth] (prism) [below=of ot] {Prism Math};
+      \node[synth] (ring) [right=of prism] {Ring Lite};
+      \node[fitbox, fit=(mwp)(glaive)(prism)(ring)] (synth_box) {};
+      \node[label, text=violet!70!black, above=0.2cm of synth_box] {Synthetic Instruct};
+      
+      % --- Final Output & Merge Point ---
+      \node[output] (out) at (11, 1.5) {MixtureVitae};
+      \coordinate (merge_point) at (8.5, 4);
+
+      % --- Arrows ---
+      \draw[arrow] (web_box.east) -- (p1.west);
+      \draw[arrow] (p1) -- (p2);
+      \draw[arrow] (p2) -- (p3);
+      \draw[arrow] (curated_box.east) |- (p_curated.west);
+      
+      \draw[thick] (p3.east) -- (merge_point);
+      \draw[thick] (p_curated.east) -| (merge_point);
+      \draw[thick] (synth_box.east) -| (merge_point);
+      
+      \draw[arrow] (merge_point) -| (out.north);
+
+    \end{tikzpicture}
+  }
+  \caption{The data-processing pipeline for creating the \MixtureVitae{} dataset. Three distinct data streams—Open Web, Curated, and Synthetic Instruct—undergo separate processing before being combined into the final dataset. \cmt[VM]{\url{https://huggingface.co/datasets/ontocord/MixtureVitae-300BT/tree/main/data/synthetic_instruct}}}
+  \label{fig:mixturevitae-pipeline}
+\end{figure*}
+
+
+\input{tables/dataset_comparison}
