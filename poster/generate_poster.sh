@@ -1,18 +1,44 @@
 #!/usr/bin/env bash
-# generate_poster.sh — Reproduces the MixtureVitae ICLR 2026 poster (index.html).
-# Run from the poster/ directory:  bash generate_poster.sh
+# generate_poster.sh — Reproduces the MixtureVitae ICLR 2026 poster.
+#
+# Usage:  bash generate_poster.sh [OUTPUT_BASENAME] [DPI_LIST]
+#   OUTPUT_BASENAME default: poster
+#   DPI_LIST       default: 150  (comma- or space-separated; e.g. "150,300")
+#
+# Outputs:
+#   OUTPUT_BASENAME.pdf                  (vector, single file per run)
+#   OUTPUT_BASENAME-<DPI>dpi.png         (one per requested DPI)
+#
+# Examples:
+#   bash generate_poster.sh                       # poster.pdf + poster-150dpi.png
+#   bash generate_poster.sh MixtureVitae_ICLR_2026 150,300
+#       -> MixtureVitae_ICLR_2026.pdf
+#          MixtureVitae_ICLR_2026-150dpi.png
+#          MixtureVitae_ICLR_2026-300dpi.png
 #
 # Prerequisites:
 #   - Logo PNGs must already exist in logos/
 #   - Figure PNGs (mixture_vitae_category_pie.png, etc.) must already exist.
+#   - Python env with playwright + chromium installed, e.g.:
+#       source /home/jjitsev/work/workloads/helper_scripts/claude_env_init.sh
+#       pip install playwright && python3 -m playwright install chromium
 #
 # What this script does:
 #   1. Writes index.html with the complete poster (affiliations, logos, content)
-#   2. Verifies the output checksum
+#   2. Renders the PDF + one PNG per DPI via headless Chromium
 
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
+
+OUT_BASE="${1:-poster}"
+DPI_LIST="${2:-150}"
+# Resolve OUT_BASE: absolute paths used as-is, relative paths anchored to SCRIPT_DIR.
+if [[ "$OUT_BASE" = /* ]]; then
+  OUT_PATH="$OUT_BASE"
+else
+  OUT_PATH="$SCRIPT_DIR/$OUT_BASE"
+fi
 
 echo "==> Writing index.html..."
 cat > index.html << 'POSTEREOF'
@@ -295,11 +321,11 @@ const CARD_REGISTRY = {
     grow: false,
     body: (
       <>
-        <div className="hl hl-orange"><p>1.7B MixtureVitae base model <b>outperforms SmolLM2-1.7B-Instruct</b> on GSM8K, HumanEval, and MBPP &mdash; despite using 36&times; fewer tokens.</p></div>
+        <div className="hl hl-orange"><p>1.7B MixtureVitae base model <b>outperforms SmolLM2-1.7B-Instruct</b> on GSM8K, HumanEval, and MBPP, despite using 36&times; fewer tokens, and models trained on other reference datasets.</p></div>
         <table>
           <thead><tr><th>Dataset</th><th>Tokens</th><th>IF-Eval</th><th>GSM8K</th><th>HumanEval</th><th>MBPP</th><th>Avg</th></tr></thead>
           <tbody>
-            <tr style={{fontWeight:700, background:'#e0f2f1'}}><td><b>MixtureVitae</b></td><td>300B</td><td>0.19</td><td className="best">0.53</td><td className="best">0.32</td><td className="best">0.38</td><td className="best">0.36</td></tr>
+            <tr style={{fontWeight:700, background:'#e0f2f1'}}><td><b>MixtureVitae</b></td><td>300B</td><td style={{fontWeight:400}}>0.19</td><td className="best">0.53</td><td className="best">0.32</td><td className="best">0.38</td><td className="best">0.36</td></tr>
             <tr><td>Comma-0.1</td><td>300B</td><td>0.19</td><td>0.06</td><td>0.13</td><td>0.22</td><td>0.15</td></tr>
             <tr><td>CommonCorpus</td><td>300B</td><td>0.13</td><td>0.02</td><td>0.05</td><td>0.05</td><td>0.06</td></tr>
             <tr><td>C4</td><td>300B</td><td>0.20</td><td>0.02</td><td>0.00</td><td>0.00</td><td>0.06</td></tr>
@@ -390,9 +416,9 @@ const CARD_REGISTRY = {
         <div className="hl" style={{background:'#ffebee', borderLeftColor:'#c62828'}}><p>MixtureVitae demonstrates that <b>permissive-first data with high instruction and reasoning density</b> can provide a practical and risk-mitigated foundation for training capable LLMs.</p></div>
         <ul>
           <li><b>Shift in the compliance&ndash;performance frontier</b> &mdash; Capabilities previously associated with mixed-license corpora are reachable with a permissive-first, risk-mitigated approach</li>
-          <li><b>Front-loading instruction &amp; reasoning data into pretraining</b> is more token-efficient than relying on post-training alone &mdash; 36&times; fewer tokens than SmolLM2-Instruct</li>
-          <li><b>Three-tier provenance scheme</b> provides a reusable blueprint for constructing legally robust pretraining mixtures with shard-level auditability</li>
+          <li><b>Front-loading instruction &amp; reasoning data into pretraining</b> : strongly enhances math/code/reasoning capabilities using only single stage, outperforms multi-stage posttrained models like SmolLM2-Instruct (36&times; more tokens!), while maintaining strong language understanding evals (matching DCLM &amp; FineWeb)</li>
           <li><b>Decontamination verified</b> &mdash; Performance holds on decontaminated benchmarks and with contaminated shards removed</li>
+          <li><b>Three-tier provenance scheme</b> provides a reusable blueprint for constructing legally robust pretraining mixtures with shard-level auditability</li>
           <li><b>Scalable recipe</b> &mdash; Path to multi-trillion token regime via subset upsampling, multilingual expansion, and synthetic growth</li>
         </ul>
         <div className="links">
@@ -610,10 +636,69 @@ root.render(<PosterApp />);
 </html>
 POSTEREOF
 
-echo "==> Verifying output..."
+echo "==> Verifying index.html..."
 ACTUAL_MD5=$(md5sum index.html | awk '{print $1}')
 echo "index.html checksum: $ACTUAL_MD5"
 
+# ---------------------------------------------------------------------------
+# Render index.html via headless Chromium:
+#   ${OUT_PATH}.pdf                  (vector, single file)
+#   ${OUT_PATH}-<DPI>dpi.png         (one per DPI in $DPI_LIST)
+# Uses render_poster.py from the posters working dir if available, otherwise
+# falls back to an inline Python block with equivalent behaviour.
+# ---------------------------------------------------------------------------
+RENDERER="/home/jjitsev/work/workloads/making/posters/helper_scripts/render_poster.py"
+echo "==> Rendering ${OUT_PATH}.pdf and ${OUT_PATH}-<DPI>dpi.png for DPIs: ${DPI_LIST}"
+if [[ -f "$RENDERER" ]]; then
+  python3 "$RENDERER" "$SCRIPT_DIR/index.html" "$OUT_PATH" --dpi "$DPI_LIST"
+else
+  python3 - "$SCRIPT_DIR/index.html" "$OUT_PATH" "$DPI_LIST" <<'PYEOF'
+import re, sys
+from pathlib import Path
+from playwright.sync_api import sync_playwright
+
+html_path = Path(sys.argv[1]).resolve()
+out_base  = Path(sys.argv[2])
+dpis = [float(x) for x in re.split(r"[,\s]+", sys.argv[3]) if x.strip()]
+html_text = html_path.read_text(encoding="utf-8", errors="ignore")
+m = re.search(r"@page\s*\{[^}]*size\s*:\s*([\d.]+)\s*mm\s+([\d.]+)\s*mm",
+              html_text, re.I | re.S)
+w_mm, h_mm = (float(m.group(1)), float(m.group(2))) if m else (841.0, 1189.0)
+css_w = int(round(w_mm / 25.4 * 96.0))
+css_h = int(round(h_mm / 25.4 * 96.0))
+url = html_path.as_uri()
+
+def png_name(dpi):
+    tag = f"{int(dpi)}dpi" if float(dpi).is_integer() else f"{dpi:g}dpi"
+    return out_base.with_name(f"{out_base.name}-{tag}.png")
+
+with sync_playwright() as p:
+    b = p.chromium.launch(args=["--no-sandbox"])
+    ctx = b.new_context(viewport={"width": css_w, "height": css_h},
+                        device_scale_factor=1.0)
+    page = ctx.new_page()
+    page.goto(url, wait_until="networkidle", timeout=60_000)
+    try: page.wait_for_selector(".poster", timeout=30_000)
+    except Exception: pass
+    page.wait_for_timeout(3000)
+    page.pdf(path=str(out_base.with_suffix(".pdf")),
+             width=f"{w_mm}mm", height=f"{h_mm}mm",
+             margin={"top":"0","bottom":"0","left":"0","right":"0"},
+             print_background=True, prefer_css_page_size=True)
+    ctx.close()
+    for dpi in dpis:
+        ctx = b.new_context(viewport={"width": css_w, "height": css_h},
+                            device_scale_factor=dpi/96.0)
+        page = ctx.new_page()
+        page.goto(url, wait_until="networkidle", timeout=60_000)
+        try: page.wait_for_selector(".poster", timeout=30_000)
+        except Exception: pass
+        page.wait_for_timeout(3000)
+        page.screenshot(path=str(png_name(dpi)), full_page=True)
+        ctx.close()
+    b.close()
+PYEOF
+fi
+
 echo ""
-echo "==> Done. index.html generated."
-echo "Open in a browser to view. Print to PDF for final output."
+echo "==> Done. Generated: index.html, ${OUT_PATH}.pdf, plus ${OUT_PATH}-<DPI>dpi.png for: ${DPI_LIST}"

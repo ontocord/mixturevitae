@@ -277,11 +277,11 @@ const CARD_REGISTRY = {
     grow: false,
     body: (
       <>
-        <div className="hl hl-orange"><p>1.7B MixtureVitae base model <b>outperforms SmolLM2-1.7B-Instruct</b> on GSM8K, HumanEval, and MBPP &mdash; despite using 36&times; fewer tokens.</p></div>
+        <div className="hl hl-orange"><p>1.7B MixtureVitae base model <b>outperforms SmolLM2-1.7B-Instruct</b> on GSM8K, HumanEval, and MBPP, despite using 36&times; fewer tokens, and models trained on other reference datasets.</p></div>
         <table>
           <thead><tr><th>Dataset</th><th>Tokens</th><th>IF-Eval</th><th>GSM8K</th><th>HumanEval</th><th>MBPP</th><th>Avg</th></tr></thead>
           <tbody>
-            <tr style={{fontWeight:700, background:'#e0f2f1'}}><td><b>MixtureVitae</b></td><td>300B</td><td>0.19</td><td className="best">0.53</td><td className="best">0.32</td><td className="best">0.38</td><td className="best">0.36</td></tr>
+            <tr style={{fontWeight:700, background:'#e0f2f1'}}><td><b>MixtureVitae</b></td><td>300B</td><td style={{fontWeight:400}}>0.19</td><td className="best">0.53</td><td className="best">0.32</td><td className="best">0.38</td><td className="best">0.36</td></tr>
             <tr><td>Comma-0.1</td><td>300B</td><td>0.19</td><td>0.06</td><td>0.13</td><td>0.22</td><td>0.15</td></tr>
             <tr><td>CommonCorpus</td><td>300B</td><td>0.13</td><td>0.02</td><td>0.05</td><td>0.05</td><td>0.06</td></tr>
             <tr><td>C4</td><td>300B</td><td>0.20</td><td>0.02</td><td>0.00</td><td>0.00</td><td>0.06</td></tr>
@@ -372,9 +372,9 @@ const CARD_REGISTRY = {
         <div className="hl" style={{background:'#ffebee', borderLeftColor:'#c62828'}}><p>MixtureVitae demonstrates that <b>permissive-first data with high instruction and reasoning density</b> can provide a practical and risk-mitigated foundation for training capable LLMs.</p></div>
         <ul>
           <li><b>Shift in the compliance&ndash;performance frontier</b> &mdash; Capabilities previously associated with mixed-license corpora are reachable with a permissive-first, risk-mitigated approach</li>
-          <li><b>Front-loading instruction &amp; reasoning data into pretraining</b> is more token-efficient than relying on post-training alone &mdash; 36&times; fewer tokens than SmolLM2-Instruct</li>
-          <li><b>Three-tier provenance scheme</b> provides a reusable blueprint for constructing legally robust pretraining mixtures with shard-level auditability</li>
+          <li><b>Front-loading instruction &amp; reasoning data into pretraining</b> : strongly enhances math/code/reasoning capabilities using only single stage, outperforms multi-stage posttrained models like SmolLM2-Instruct (36&times; more tokens!), while maintaining strong language understanding evals (matching DCLM &amp; FineWeb)</li>
           <li><b>Decontamination verified</b> &mdash; Performance holds on decontaminated benchmarks and with contaminated shards removed</li>
+          <li><b>Three-tier provenance scheme</b> provides a reusable blueprint for constructing legally robust pretraining mixtures with shard-level auditability</li>
           <li><b>Scalable recipe</b> &mdash; Path to multi-trillion token regime via subset upsampling, multilingual expansion, and synthetic growth</li>
         </ul>
         <div className="links">
