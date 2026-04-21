@@ -1,5 +1,5 @@
 # MixtureVitae
-MixtureVitae: A Permissive, High-Performance, Open-Access Pretraining Dataset. [[ArXiv:2509.25531]](https://arxiv.org/abs/2509.25531) [[TMLR Featured]](https://openreview.net/forum?id=SyCcUNUUMf) [[MixtureVitae Website]](https://mixturevitae.github.io/)
+MixtureVitae: A Permissive, High-Performance, Open-Access Pretraining Dataset. [[ArXiv:2509.25531]](https://arxiv.org/abs/2509.25531) [[TMLR Featured Paper]](https://openreview.net/forum?id=SyCcUNUUMf) [[MixtureVitae Website]](https://mixturevitae.github.io/)
 
 ## Artefacts for reproduction
 
