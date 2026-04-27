@@ -20,7 +20,7 @@
 #   - Logo PNGs must already exist in logos/
 #   - Figure PNGs (mixture_vitae_category_pie.png, etc.) must already exist.
 #   - Python env with playwright + chromium installed, e.g.:
-#       source /home/jjitsev/work/workloads/helper_scripts/claude_env_init.sh
+#       source /path/to/base_env/bin/activate
 #       pip install playwright && python3 -m playwright install chromium
 #
 # What this script does:
