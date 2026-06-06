@@ -1,0 +1,19 @@
+# list of tasks to be evaluated
+# must have format "task";"number_fewshots"
+# group those tasks together
+copa,openbookqa,lambada_openai,winogrande,social_iqa;0
+# openbookqa;0
+# lambada_openai;0
+# winogrande;0
+# social_iqa;0
+# mmlu_pro;5
+mmlu_continuation;5
+mmlu;5
+commonsense_qa,piqa,arc_challenge;10
+arc_easy,hellaswag,boolq;10
+#commonsense_qa;10
+#piqa;10
+#arc_challenge;10
+#arc_easy;10
+#hellaswag;10
+#boolq;10
